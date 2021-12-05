@@ -1,0 +1,26 @@
+{
+  "name": "report-system-node",
+  "version": "1.0.0",
+  "description": "Report System built in Nodejs!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "nodejs",
+    "rest",
+    "api"
+  ],
+  "author": "Diego A. Matheus",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.14"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
