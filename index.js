@@ -1,15 +1,26 @@
-const express = require('express')
+const express = require('express');
+const dotenv  = require('dotenv').config();
+                require('./database/connection')();
+const User    = require('./models/User');
+const port    = process.env.PORT || 8080;
 
 const app = express();
 
-app.get('/', (req, res)=>{
-    res
-        .send("Welcome")
-        .statusCode(200)
+app.get('/', async (req, res) => {
+    try {
+        let user = await User.create({username: "diegomfg11", password: 'diego1210', role: 'user'})
+        console.log(user);
+        res.send(user)
+    } catch (error) {
+        console.log(error);
+        res.send(error.message)
+    }
 })
 
-const port = process.env.PORT || 8080;
+app.get('/:id', (req, res) => {
+    res.send(req.params)
+})
 
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(`Service running at port: ${port}`)
 })
