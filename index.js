@@ -8,7 +8,7 @@ const app = express();
 
 app.get('/', async (req, res) => {
     try {
-        let user = await User.create({username: "diegomfg11", password: 'diego1210', role: 'user'})
+        let user = await User.create({username: "djkjsks", password: '1234328', role: 'user'})
         console.log(user);
         res.send(user)
     } catch (error) {
