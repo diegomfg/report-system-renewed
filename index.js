@@ -1,24 +1,28 @@
 const express = require('express');
+
+// config vars
 const dotenv  = require('dotenv').config();
+// Database connection
                 require('./database/connection')()
+// User model
 const User    = require('./models/User');
+// User routes
+const userRoutes = require('./routes/user.routes')
+
 const port    = process.env.PORT || 8080;
 
+/**
+ * Setup main Express application.
+ */
 const app = express();
 
-app.get('/', async (req, res) => {
-    try {
-        let user = await User.create({username: "djkjsks", password: '1234328', role: 'user'})
-        console.log(user);
-        res.send(user)
-    } catch (error) {
-        console.log(error);
-        res.send(error.message)
-    }
-})
+/**
+ * Set up the external routes.
+ */
+ app.use('/users', userRoutes)
 
-app.get('/:id', (req, res) => {
-    res.send(req.params)
+app.get('/', async (req, res) => {    
+    res.send("ok")
 })
 
 app.listen(port, () => {
