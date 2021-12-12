@@ -1,6 +1,6 @@
 const express = require('express');
 const dotenv  = require('dotenv').config();
-                require('./database/connection')();
+                require('./database/connection')()
 const User    = require('./models/User');
 const port    = process.env.PORT || 8080;
 
