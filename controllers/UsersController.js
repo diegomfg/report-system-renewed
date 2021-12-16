@@ -2,7 +2,15 @@ const User = require("../models/User")
 
 module.exports = {
 
-    create: (req, res) => {
+    all: async (req, res) => {
+        try {
+            res.send(await User.find({}).exec())
+        } catch (error) {
+            res.send(error.message)
+        }
+    },
+
+    create: async (req, res) => {
         try {
             let user = await User.create({
                 username: req.body.username,
@@ -36,8 +44,21 @@ module.exports = {
         }).catch((error) => res.send(error.message))
     },
 
-    update: (req, res) => {
-        res.send("update!")
+    update: async (req, res) => {
+        /**
+         * @TODO Add support for profile images and descriptions
+         */
+        const id = req.params.id;
+        // const user = await User.findOne({id}).exec();
+        
+        try {
+
+            const updated = await User.updateOne({id}, {...req.body})
+            res.send({updated})
+
+        } catch (error) {
+            res.send(error.message)
+        }
     }
 
 }
