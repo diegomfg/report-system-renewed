@@ -12,13 +12,15 @@ module.exports = {
 
     create: async (req, res) => {
         try {
+            
             let user = await User.create({
                 username: req.body.username,
                 password: req.body.password,
                 role: req.body.role
             })
-            console.log(user);
-            res.send(user)
+            
+            res.send({username: user?.username, id: user?.id, role: user?.role,})
+            
         } catch (error) {
             console.log(error);
             res.send(error.message)

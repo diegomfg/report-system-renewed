@@ -1,22 +1,23 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 12;
+const validationStrings = require('../constants/UserValidationStrings')
 
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
         unique: true,
-        min: [3, 'Username too short!']
+        min: [3, validationStrings.USERNAME_TOO_SHORT]
     },
     password: {
         type: String,
-        min: [4, 'Password must be at least 4 characters long']
+        min: [4, validationStrings.PASSWORD_MIN_LENGTH_MSG]
     },
     role: {
         type: String,
         enum: ['user', 'admin'],
-        required: [true, 'Role must be either admin or user']
+        required: [true, validationStrings.INVALID_ROLE]
     }
 });
 
