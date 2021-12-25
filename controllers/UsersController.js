@@ -16,15 +16,19 @@ module.exports = {
 
     create: async (req, res) => {
         try {
-            
+
             let user = await User.create({
                 username: req.body.username,
                 password: req.body.password,
                 role: req.body.role
             })
-            
-            res.send({username: user?.username, id: user?.id, role: user?.role,})
-            
+
+            res.send({
+                username: user.username,
+                id: user.id,
+                role: user.role,
+            })
+
         } catch (error) {
             console.log(error);
             res.send(error.message)
@@ -56,15 +60,25 @@ module.exports = {
          */
         const id = req.params.id;
         // const user = await User.findOne({id}).exec();
-        
+
         try {
 
-            const updated = await User.updateOne({id}, {...req.body})
-            res.send({updated})
+            const updated = await User.updateOne({
+                id
+            }, {
+                ...req.body
+            })
+            res.send({
+                updated
+            })
 
         } catch (error) {
             res.send(error.message)
         }
+    },
+
+    delete: (req, res) => {
+        res.send(`Deleteing user with id: ${req.params.user_id}`)
     }
 
 }
