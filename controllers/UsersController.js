@@ -1,7 +1,11 @@
 const User = require("../models/User")
 
 module.exports = {
-
+    /**
+     * @todo Refactor into promise based functions
+     * @param {Express.Request} req 
+     * @param {Express.Response} res 
+     */
     all: async (req, res) => {
         try {
             res.send(await User.find({}).exec())

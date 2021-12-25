@@ -6,6 +6,7 @@ const dotenv = require('dotenv').config();
 require('./database/connection')()
 // User routes
 const userRoutes = require('./routes/user.routes')
+const reportRoutes = require('./routes/report.routes')
 
 const port = process.env.PORT || 8080;
 
@@ -22,7 +23,10 @@ app.use(express.json())
 /**
  * Set up the external routes.
  */
-app.use('/users', userRoutes)
+
+ app.use('/users', userRoutes)
+ app.use('/reports', reportRoutes)
+
 
 app.get('/', async (req, res) => {
     res.send("ok")
