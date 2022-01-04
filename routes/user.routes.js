@@ -1,4 +1,6 @@
-const userRouter = require('express').Router({mergeParams: true});
+const userRouter = require('express').Router({
+  mergeParams: true
+});
 
 const userController = require('../controllers/UsersController');
 

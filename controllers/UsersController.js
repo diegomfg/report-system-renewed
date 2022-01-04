@@ -61,11 +61,17 @@ module.exports = {
          */
         const id = req.params.id;
         // const user = await User.findOne({id}).exec();
-        
+
         try {
 
-            const updated = await User.updateOne({id}, {...req.body})
-            res.send({updated})
+            const updated = await User.updateOne({
+                id
+            }, {
+                ...req.body
+            })
+            res.send({
+                updated
+            })
 
         } catch (error) {
             res.send(error.message)
