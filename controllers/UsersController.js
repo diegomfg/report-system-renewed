@@ -16,22 +16,23 @@ module.exports = {
 
     create: async (req, res) => {
         try {
+            
+            
+            // let user = await User.create({
+            //     username: req.body.username,
+            //     password: req.body.password,
+            //     role: req.body.role
+            // })
 
-            let user = await User.create({
-                username: req.body.username,
-                password: req.body.password,
-                role: req.body.role
-            })
-
-            res.send({
-                username: user.username,
-                id: user.id,
-                role: user.role,
-            })
-
+            let user = await User.create(req.body)
+            
+            res.send({username: user?.username, id: user?.id, role: user?.role,})
+            
         } catch (error) {
-            console.log(error);
-            res.send(error.message)
+            // Handle error for duplicated username keys
+            if(error.code == 11000){
+                res.status(504).send({message: "Error: Username is already in use"})
+            } else res.send(error.message)
         }
     },
 
@@ -78,7 +79,15 @@ module.exports = {
     },
 
     delete: (req, res) => {
-        res.send(`Deleteing user with id: ${req.params.user_id}`)
+        
+        const { id } = req.params;
+
+        User.deleteOne({id}).exec()
+        .then((deleted) => res.send(deleted, {message: "deleted"}))
+        .catch((error) => {
+            console.log(error)
+            res.send(error.message)
+        })
     }
 
 }
