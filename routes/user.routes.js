@@ -10,4 +10,6 @@ userRouter.get('/:username', userController.getByUsername);
 
 userRouter.put('/:user_id', userController.update)
 
+userRouter.delete('/:user_id', userController.delete)
+
 module.exports = userRouter;

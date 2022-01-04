@@ -8,7 +8,8 @@ const dotenv  = require('dotenv').config();
 const User    = require('./models/User');
 // User routes
 const userRoutes = require('./routes/user.routes')
-const reportRoutes = require('./routes/report.routes')
+const reportRoutes = require('./routes/report.routes');
+const Report = require('./models/Report');
 
 const port    = process.env.PORT || 8080;
 
@@ -26,7 +27,16 @@ app.use(express.json())
  app.use('/reports', reportRoutes)
 
 app.get('/', async (req, res) => {    
-    res.send("ok")
+    // try {
+    //     let users = await User.find({});
+    //     let user = users[0];
+    //     const report = await Report.create({title: "ds", author: user.id})
+    //     res.send(report);
+    // } catch (error) {
+    //     res.send(error.message);
+    //     console.log(error.message)
+    // }
+    res.status(200).send("ok")
 })
 
 app.listen(port, () => {

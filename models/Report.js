@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
-const timeStamp = require("mongoose-timestamp");
+const timeStamp = require("mongoose-timestamps");
 
 const reportSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        required: [true, 'Title is a required field'],
         min: [3, 'Title must be at least 3 characters long']
     },
 
     body: {
-        type: String
+        type: String,
+        required: [true, 'Comment must have a text body']
     },
 
     author: {
