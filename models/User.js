@@ -3,10 +3,6 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 12;
 const validationStrings = require('../constants/UserValidationStrings')
 
-/**
- * @todo Research about custom validation strings. Current setting is not working.
- */
-
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -23,10 +19,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin'],
         required: [true, validationStrings.ROLE_REQUIRED_FIELD]
-    },
-    author: {
-        type: mongoose.SchemaTypes.ObjectId,
-        required: [true, validationStrings.AUTHOR_REQUIRED_FIELD]
     }
 });
 

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const timeStamp = require("mongoose-timestamps");
-
+/**
+ * @TODO Add external validation strings.
+ */
 const reportSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -19,6 +21,11 @@ const reportSchema = new mongoose.Schema({
             ref: "User"
         }
     },
+
+    // author: {
+    //     type: mongoose.SchemaTypes.ObjectId,
+    //     required: [true, validationStrings.AUTHOR_REQUIRED_FIELD]
+    // },
 
     approved: {
         type: Boolean,

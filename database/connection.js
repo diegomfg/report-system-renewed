@@ -5,7 +5,10 @@ const connection_url =
 module.exports = () => {
         Mongoose.connect(connection_url)
         .then(()=> console.log("database connection ok"))
-        .catch((error) => console.log(error.message));
+        .catch((error) => {
+            // Throw the error || Handle the error
+            console.log(error.message)
+        });
     
 }
 

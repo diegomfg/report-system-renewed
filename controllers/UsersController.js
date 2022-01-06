@@ -1,3 +1,5 @@
+const ResponseStrings = require("../constants/ResponseStrings")
+const Response = require("../models/Response")
 const User = require("../models/User")
 
 module.exports = {
@@ -6,9 +8,10 @@ module.exports = {
      * @param {Express.Request} req 
      * @param {Express.Response} res 
      */
-    all: async (req, res) => {
+    findAll: async (req, res) => {
         try {
-            res.send(await User.find({}).exec())
+            const foundUser = await User.find({}).exec()
+            res.send(new Response(ResponseStrings.SUCCESS, foundUser))
         } catch (error) {
             res.send(error.message)
         }
@@ -26,17 +29,20 @@ module.exports = {
 
             let user = await User.create(req.body)
             
-            res.send({username: user?.username, id: user?.id, role: user?.role,})
+            res.send(new Response(ResponseStrings.SUCCESS, {username: user?.username, id: user?.id, role: user?.role,}))
             
         } catch (error) {
             // Handle error for duplicated username keys
             if(error.code == 11000){
-                res.status(504).send({message: "Error: Username is already in use"})
-            } else res.send(error.message)
+                res.status(504).send(new Response(ResponseStrings.ERROR, "Username is already in use"))
+            } else {
+                console.log(error)
+                res.send(new Response(ResponseStrings.ERROR, error.message))
+            }
         }
     },
 
-    getByUsername: (req, res) => {
+    findByUsername: (req, res) => {
         User.findOne({
             username: req.params.username
         }).exec().then((user) => {
@@ -46,13 +52,9 @@ module.exports = {
                 role,
                 _id
             } = user;
-            res.send({
-                username,
-                role,
-                _id
-            })
+            res.send(new Response(ResponseStrings.SUCCESS, {username, role, _id}))
 
-        }).catch((error) => res.send(error.message))
+        }).catch((error) => res.send(new Response(ResponseStrings.ERROR, error.message)))
     },
 
     update: async (req, res) => {
@@ -69,24 +71,23 @@ module.exports = {
             }, {
                 ...req.body
             })
-            res.send({
-                updated
-            })
+            res.send(new Response(ResponseStrings.SUCCESS, updated))
 
         } catch (error) {
-            res.send(error.message)
+            res.send(new Response(ResponseStrings.ERROR, error.message))
         }
     },
 
     delete: (req, res) => {
         
+        // delete by username instead?
         const { id } = req.params;
 
         User.deleteOne({id}).exec()
-        .then((deleted) => res.send(deleted, {message: "deleted"}))
+        .then((deleted) => res.send(new Response(ResponseStrings.SUCCESS, deleted)))
         .catch((error) => {
             console.log(error)
-            res.send(error.message)
+            res.send(new Response(ResponseStrings.ERROR, error.message))
         })
     }
 

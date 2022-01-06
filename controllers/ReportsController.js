@@ -1,7 +1,7 @@
 const Report = require('../models/Report');
 
 module.exports = {
-    getAll: (req, res) => {
+    findAll: (req, res) => {
         Report
         .find({})
         .exec()
@@ -13,7 +13,7 @@ module.exports = {
         })
     },
 
-    get: (req, res) => {
+    findById: (req, res) => {
 
         const { id } = req.params;
 
@@ -47,9 +47,10 @@ module.exports = {
 
          try {
              const updated = await Report.updateOne({id}, {...req.body})
-             res.send({updated})
+             res.status(200).send({updated})
  
          } catch (error) {
+            console.log(error.message);
              res.send(error.message)
          }
     },
@@ -61,7 +62,7 @@ module.exports = {
         Report
         .deleteOne({id})
         .exec()
-        .then((deleteResult) => res.send(deleteResult))
+        .then((deleteResult) => res.status(200).send((deleteResult)))
         .catch((error) => { 
             console.log(error); res.send(error.message)
         })
