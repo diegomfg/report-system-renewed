@@ -1,9 +1,10 @@
 const express = require('express');
-
+const morgan = require('morgan');
 // config environment vars
 const dotenv = require('dotenv').config();
 // Database connection
-require('./database/connection')()
+const connection = require('./database/connection');
+      connection();
 // User routes
 const userRoutes = require('./routes/user.routes')
 const reportRoutes = require('./routes/report.routes');
@@ -15,6 +16,11 @@ const port = process.env.PORT || 8080;
  * Setup main Express application.
  */
 const app = express();
+
+/**
+ * Setup logger
+ */
+app.use(morgan('common'))
 
 /**
  * Setup json middleware

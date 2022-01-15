@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+
 const SALT_WORK_FACTOR = 12;
 const validationStrings = require('../constants/UserValidationStrings')
 
@@ -16,6 +17,9 @@ const userSchema = new mongoose.Schema({
         min: [4, validationStrings.PASSWORD_MIN_LENGTH_MSG]
     },
     role: {
+        /**
+         * @todo Customize `role` enum validation message
+         */
         type: String,
         enum: ['user', 'admin'],
         required: [true, validationStrings.ROLE_REQUIRED_FIELD]

@@ -16,6 +16,7 @@ const reportSchema = new mongoose.Schema({
     },
 
     author: {
+        // type: mongoose.Schema.Types.ObjectId
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
@@ -23,7 +24,12 @@ const reportSchema = new mongoose.Schema({
     },
 
     // author: {
-    //     type: mongoose.SchemaTypes.ObjectId,
+    //     type: {
+    //     id: {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: "User"
+    //     }
+    // }
     //     required: [true, validationStrings.AUTHOR_REQUIRED_FIELD]
     // },
 

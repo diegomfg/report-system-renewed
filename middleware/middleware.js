@@ -6,7 +6,7 @@ module.exports = {
   },
 
   tokenValidator: (req, res, next) => {
-    if (req.get('authentication')) {
+    if (req.get('Autorization')) {
       return next();
     }
   },

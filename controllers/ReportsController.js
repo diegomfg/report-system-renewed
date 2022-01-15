@@ -1,4 +1,6 @@
+const ResponseStrings = require('../constants/ResponseStrings');
 const Report = require('../models/Report');
+const Response = require('../models/Response');
 
 module.exports = {
     findAll: (req, res) => {
@@ -6,7 +8,7 @@ module.exports = {
         .find({})
         .exec()
         .then((reports) => {
-            return res.send(reports)
+            return res.send(new Response(ResponseStrings.SUCCESS, reports))
         })
         .catch((err) => { 
             return res.send(err.message)
