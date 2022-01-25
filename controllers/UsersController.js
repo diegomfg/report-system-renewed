@@ -32,10 +32,16 @@ module.exports = {
         } catch (error) {
             // Handle error for duplicated username keys
             if(error.code == 11000){
-                res.send(new Response(ResponseStrings.ERROR, "Username already in use!"))
+               return res.send(new Response(ResponseStrings.ERROR, "Username already in use!"))
             } else {
-                console.log(error)
-                res.send(new Response(ResponseStrings.ERROR, error.message))
+                
+                for(const [key, value] of Object.entries(error.errors)){
+                    if(key == 'role'){
+                       return res.send(new Response(ResponseStrings.ERROR, "Invalid value for option role"))
+                    }
+                }
+
+                return res.send(new Response(ResponseStrings.ERROR, error.message))
             }
         }
     },
@@ -65,7 +71,6 @@ module.exports = {
         try {
             const updated = await User.updateOne({ id }, {...req.body})
             res.send(new Response(ResponseStrings.SUCCESS, updated))
-
         } catch (error) {
             res.send(new Response(ResponseStrings.ERROR, error.message))
         }
