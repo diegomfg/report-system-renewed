@@ -1,3 +1,4 @@
+const { Mongoose } = require("mongoose")
 const ResponseStrings = require("../constants/ResponseStrings")
 const Response = require("../models/Response")
 const User = require("../models/User")
@@ -46,49 +47,61 @@ module.exports = {
         }
     },
 
-    findByUsername: (req, res) => {
-        User.findOne({
-            username: req.params.username
-        }).exec().then((user) => {
-            if(user) {
-                const {
-                    username,
-                    role,
-                    _id
-                } = user;
-                res.send(new Response(ResponseStrings.SUCCESS, {username, role, _id}))
-            } else return res.send(new Response(ResponseStrings.ERROR, `No record found with username: '${req.params.username}'`))
-        }).catch((error) => res.send(new Response(ResponseStrings.ERROR, error.message)))
+    findByUsername: async (req, res) => {
+
+        console.log(req.params)
+
+        try {
+            const user = await User.findOne({username: req.params.username});
+            
+            const {username, role, _id} = user;
+            res.send(new Response(ResponseStrings.SUCCESS, {username, role, _id}))
+        } catch (error) {
+            res.send(new Response(ResponseStrings.ERROR, error.message));
+        }
+
     },
 
     update: async (req, res) => {
+       
+        const { user_id } = req.params;
+
+        console.log('body to update: ', {...req.body})
+
         /**
-         * @TODO Add support for profile images and descriptions
+         * @todo refactor into async await
+         * How to do the $set thing? New passwords are not being hashed
          */
-        const id = req.params.id;
-        // const user = await User.findOne({id}).exec();
-
-        try {
-            const updated = await User.updateOne({ id }, {...req.body})
-            res.send(new Response(ResponseStrings.SUCCESS, updated))
-        } catch (error) {
-            res.send(new Response(ResponseStrings.ERROR, error.message))
-        }
-    },
-
-    delete: (req, res) => {
-        
-        // delete by username instead?
-        const { id } = req.params;
-
-        User.deleteOne(id).exec()
-        .then((deleted) => {
-            res.send(new Response(ResponseStrings.SUCCESS, deleted))
+        User.findOneAndUpdate({id: user_id}, req.body).then((updated) => {
+            return res.send(new Response(ResponseStrings.SUCCESS, updated))
         })
         .catch((error) => {
-            console.log(error)
-            res.send(new Response(ResponseStrings.ERROR, error.message))
+            console.log(error.message)
+            return res.send(new Response(ResponseStrings.ERROR, error.message))
         })
+    },
+
+    delete: async (req, res) => {
+        
+        
+        const { user_id } = req.params;
+        
+
+        try {
+            // const found_user = await User.findById(user_id);
+            // console.log(`Found this one: ${found_user}`)
+
+            const user = await User.findById(user_id);
+            if(user == null){
+                return res.send(new Response(ResponseStrings.ERROR, `Couldn't find any user with id: ${user_id}`))
+            }
+            const deleted = await User.findByIdAndDelete(user_id);
+            return res.send(new Response(ResponseStrings.SUCCESS, deleted))
+
+        } catch (e) {
+            console.log(e.message)
+            res.send(new Response(ResponseStrings.ERROR, e.message))
+        }
     }
 
 }

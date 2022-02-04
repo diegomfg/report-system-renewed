@@ -15,13 +15,13 @@ const reportSchema = new mongoose.Schema({
         required: [true, 'Comment must have a text body']
     },
 
-    author: {
-        // type: mongoose.Schema.Types.ObjectId
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
-    },
+    // author: {
+    //     // type: mongoose.Schema.Types.ObjectId
+    //     id: {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: "User"
+    //     }
+    // },
 
     // author: {
     //     type: {

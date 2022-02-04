@@ -3,70 +3,71 @@ const Report = require('../models/Report');
 const Response = require('../models/Response');
 
 module.exports = {
-    findAll: (req, res) => {
-        Report
-        .find({})
-        .exec()
-        .then((reports) => {
-            return res.send(new Response(ResponseStrings.SUCCESS, reports))
-        })
-        .catch((err) => { 
-            return res.send(err.message)
-        })
+    findAll: async (req, res) => {
+
+        try {
+            const reports = await Report.find();
+        return res.send(new Response(ResponseStrings.SUCCESS, reports))
+        } catch (error) {
+            return res.send(new Response(ResponseStrings.ERROR, error.message))
+        }
     },
 
-    findById: (req, res) => {
+    findById: async (req, res) => {
 
         const { id } = req.params;
 
-        Report
-        .findOne({id})
-        .exec()
-        .then((report)=> res.send(report)).catch((error) => {
-            console.log(error)
-            res.send(error.message)
-        })
-
+        try {
+            const report = await Report.findOne({id});
+            if(!report) return res.send(new Response(ResponseStrings.ERROR, `No report found with id: ${ id }`))
+            return res.send(new Response(ResponseStrings.SUCCESS, report))
+        } catch (error) {
+            return res.send(new Response(ResponseStrings.ERROR, error.message))
+        }
     },
 
-    create: (req, res) => {
+    create: async (req, res) => {
 
-        Report
-        .create(req.body)
-        .then((created) => {
-            console.log(created)
-            return res.send(created)
-        }).catch((error) => {
-            console.log(error)
-            res.send(error.message)
-        })
-
+        try {
+            const created = await Report.create(req.body);
+            return res.send(new Response(ResponseStrings.SUCCESS, created))
+        } catch (error) {
+            return res.send(new Response(ResponseStrings.ERROR, error.message))
+        }
     },
 
     update: async (req, res) => {
        
+        /**
+         * @todo Test update
+         */
          const { id } = req.params;
 
          try {
              const updated = await Report.updateOne({id}, {...req.body})
-             res.status(200).send({updated})
- 
+             if(updated.modifiedCount != 0) return res.status(200).send(new Response(ResponseStrings.SUCCESS, "Successfully updated record"))
+
+             return res.send(new Response(ResponseStrings.ERROR, "Unable to update record"))
+
          } catch (error) {
             console.log(error.message);
-             res.send(error.message)
+            return res.send(new Response(ResponseStrings.ERROR, error.message))
          }
     },
 
-    delete: (req, res) => {
+    delete: async (req, res) => {
 
         const { id } = req.params;
 
-        Report
-        .deleteOne({id})
-        .exec()
-        .then((deleteResult) => res.status(200).send((deleteResult)))
-        .catch((error) => { 
-            console.log(error); res.send(error.message)
-        })
+        try {
+            const report = await Report.findOne({id})
+            if(report == null) {
+                return res.send(new Response(ResponseStrings.ERROR, `No report found with id ${ id }`))
+            } 
+            const deleted = await Report.deleteOne({_id: id});
+            return res.send(new Response(ResponseStrings.SUCCESS, deleted))
+        } catch (error) {
+            return res.send(new Response(ResponseStrings.ERROR, error.message))
+        }
     }
 }

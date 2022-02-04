@@ -31,22 +31,13 @@ app.use(express.json())
  * Set up the external routes.
  */
 
+app.get('/', (req, res)=>{
+    res.send({"/users": "Users API",
+              "/reports": "Reports API"})
+})
+
  app.use('/users', userRoutes)
  app.use('/reports', reportRoutes)
-
-app.get('/', async (req, res) => {    
-    // try {
-    //     let users = await User.find({});
-    //     let user = users[0];
-    //     const report = await Report.create({title: "ds", author: user.id})
-    //     res.send(report);
-    // } catch (error) {
-    //     res.send(error.message);
-    //     console.log(error.message)
-    // }
-    res.status(200).send("ok")
-
-})
 
 app.listen(port, () => {
     console.log(`Service running at port: ${port}`)
