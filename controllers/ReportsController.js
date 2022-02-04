@@ -37,10 +37,7 @@ module.exports = {
     },
 
     update: async (req, res) => {
-       
-        /**
-         * @todo Test update
-         */
+
          const { id } = req.params;
 
          try {

@@ -4,11 +4,7 @@ const Response = require("../models/Response")
 const User = require("../models/User")
 
 module.exports = {
-    /**
-     * @todo Refactor into promise based functions
-     * @param {Express.Request} req 
-     * @param {Express.Response} res 
-     */
+    
     findAll: async (req, res) => {
         try {
             const foundUser = await User.find({}).exec()
@@ -95,7 +91,9 @@ module.exports = {
             if(user == null){
                 return res.send(new Response(ResponseStrings.ERROR, `Couldn't find any user with id: ${user_id}`))
             }
-            const deleted = await User.findByIdAndDelete(user_id);
+            // const deleted = await Report.deleteOne({_id: id});
+            const deleted = await User.deleteOne({_id: user_id})
+            // const deleted = await User.findByIdAndDelete(user_id);
             return res.send(new Response(ResponseStrings.SUCCESS, deleted))
 
         } catch (e) {
