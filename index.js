@@ -5,7 +5,7 @@ const path = require('path')
 const dotenv = require('dotenv').config()
 // Database connection
 const connection = require('./database/connection')
-      connection();
+connection();
 // User routes
 const userRoutes = require('./routes/user.routes')
 const reportRoutes = require('./routes/report.routes')
@@ -19,8 +19,15 @@ const port = process.env.PORT || 8080;
  */
 const app = express();
 
-app.set('views', path.join(__dirname) + '/views')
 app.set('view engine', 'hbs')
+
+/**
+ * Serve static content
+ */
+app.use(express.static(__dirname + '/public'))
+app.set('views','public/views/')
+
+console.log(app.get('views'))
 
 /**
  * Setup logger
@@ -36,14 +43,19 @@ app.use(express.json())
  * Set up the external routes.
  */
 
-app.get('/', (req, res)=>{
-    res.send({"/users": "Users API",
-              "/reports": "Reports API"})
+app.get('/', (req, res) => {
+    res.send({
+        "/users": "Users API",
+        "/reports": "Reports API"
+    })
 })
-
- app.use('/users', userRoutes)
- app.use('/reports', reportRoutes)
- app.use('/register', registerRoutes)
+/**
+ * @todo Add middleware to protect routes
+ * @todo Use authorization token middleware
+ */
+app.use('/users', userRoutes)
+app.use('/reports', reportRoutes)
+app.use('/register', registerRoutes)
 
 app.listen(port, () => {
     console.log(`Service running at port: ${port}`)
