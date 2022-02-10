@@ -1,6 +1,5 @@
 const express = require('express')
 const morgan = require('morgan')
-const path = require('path')
 // config environment vars
 const dotenv = require('dotenv').config()
 // Database connection
@@ -10,7 +9,6 @@ connection();
 const userRoutes = require('./routes/user.routes')
 const reportRoutes = require('./routes/report.routes')
 const registerRoutes = require('./routes/register.routes')
-const Report = require('./models/Report');
 
 const port = process.env.PORT || 8080;
 
@@ -26,8 +24,6 @@ app.set('view engine', 'hbs')
  */
 app.use(express.static(__dirname + '/public'))
 app.set('views','public/views/')
-
-console.log(app.get('views'))
 
 /**
  * Setup logger
