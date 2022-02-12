@@ -2,6 +2,7 @@ const ResponseStrings = require("../constants/ResponseStrings");
 const Response = require("../models/Response");
 const User = require("../models/User");
 const utilities = require("../utils/utilities");
+
 module.exports = {
   findAll: async (req, res) => {
     try {
@@ -13,8 +14,8 @@ module.exports = {
   },
 
   create: async (req, res) => {
+    console.log(`Request body:`, req.body)
     try {
-    
       let user = await User.create(req.body);
       let { id, username, role } = user;
       if (!user)

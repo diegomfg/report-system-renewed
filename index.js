@@ -1,15 +1,26 @@
 const express = require('express')
 const morgan = require('morgan')
 const hbs = require('hbs')
+
 /**
- * @abstract Configure environment variables
+ *
+ * @summary Configure environment variables
  * Loads a local .env file with configuration variables such as PORT, local_db_uri, prod_db_uri
  */
 const dotenv = require('dotenv').config()
-// Database connection
+
+
+/**
+ * @summary Requires Mongodb and starts the connection
+ */
 const connection = require('./database/connection')
 connection();
-// User routes
+
+
+/**
+ * @summary Import the routes for the two main entities.
+ * Each entity has its own API.
+ */
 const userRoutes = require('./routes/user.routes')
 const reportRoutes = require('./routes/report.routes')
 const registerRoutes = require('./routes/register.routes')
