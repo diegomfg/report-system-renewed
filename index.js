@@ -1,6 +1,10 @@
 const express = require('express')
 const morgan = require('morgan')
-// config environment vars
+const hbs = require('hbs')
+/**
+ * @abstract Configure environment variables
+ * Loads a local .env file with configuration variables such as PORT, local_db_uri, prod_db_uri
+ */
 const dotenv = require('dotenv').config()
 // Database connection
 const connection = require('./database/connection')
@@ -24,6 +28,8 @@ app.set('view engine', 'hbs')
  */
 app.use(express.static(__dirname + '/public'))
 app.set('views','public/views/')
+
+hbs.registerPartials(__dirname + '/public/views/partials')
 
 /**
  * Setup logger
