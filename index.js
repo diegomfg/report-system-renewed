@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const hbs = require('hbs')
+const cors = require('cors')
 
 /**
  *
@@ -48,9 +49,10 @@ hbs.registerPartials(__dirname + '/public/views/partials')
 app.use(morgan('common'))
 
 /**
- * Setup json middleware
+ * Middleware set up
  */
 app.use(express.json())
+app.use(cors())
 
 /**
  * Set up the external routes.

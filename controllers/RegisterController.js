@@ -8,7 +8,8 @@ module.exports = {
     },
 
     postRegisterPage: (req, res) => {
-        return res.redirect(307, '/users/create')
-        // Redirect to User controller or call User entity here?
+        // return res.redirect(307, '/users/create')
+        console.log("Request body: ", req.body)
+        res.send("ok")
     }
 }
