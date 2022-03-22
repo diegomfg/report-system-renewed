@@ -1,4 +1,4 @@
-var express = require('express')
+const usersController = require('./UsersController')
 
 module.exports = {
     renderRegisterPage: (req, res) => {
@@ -7,9 +7,5 @@ module.exports = {
        })
     },
 
-    postRegisterPage: (req, res) => {
-        // return res.redirect(307, '/users/create')
-        console.log("Request body: ", req.body)
-        res.send("ok")
-    }
+    postRegisterPage: usersController.create
 }

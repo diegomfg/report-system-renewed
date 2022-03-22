@@ -4,6 +4,10 @@ const User = require("../models/User");
 const utilities = require("../utils/utilities");
 
 module.exports = {
+  /**
+   * @todo remove this endpoint
+   * @todo Secure all endpoints
+   */
   findAll: async (req, res) => {
     try {
       const allUsers = await User.find({}).exec();
@@ -14,28 +18,35 @@ module.exports = {
   },
 
   create: async (req, res) => {
-    console.log(`Request body:`, req.body)
+    console.log(`Request body at user controller:`, req.body)
+
     try {
+
       let user = await User.create(req.body);
       let { id, username, role } = user;
+
       if (!user)
         return res.send(
-          new Response(ResponseStrings.ERROR, "Error creating new user")
+          new Response(ResponseStrings.ERROR, {error: "Error creating new user"})
         );
 
-      return res.send(
-        new Response(ResponseStrings.SUCCESS, {
-          id,
-          username,
-          role,
-        })
-      );
+      /**
+       * @todo Temporary, only render Dashboard when:
+       * 1* Register
+       * 2* Login
+       * 3* Authenticated but navigates to /dashboard
+       * 4* Try rendering user/dashboard, passing new Response(RS.SUCCESS, {user: the actual user})
+       */
+      return res.render('user/dashboard', new Response(ResponseStrings.SUCCESS, {user: {
+        id, 
+        username, 
+        role 
+      }}))
+      
     } catch (error) {
       // Handle error for duplicated username keys
       if (error.code == 11000) {
-        return res.send(
-          new Response(ResponseStrings.ERROR, "Username already in use!")
-        );
+        return res.render('user/register', {error: `Username ${req.body.username} is already in use`});
       } else {
         for (const [key, value] of Object.entries(error.errors)) {
           if (key == "role") {
@@ -57,16 +68,19 @@ module.exports = {
     try {
       const user = await User.findOne({
         username: req.params.username,
-      });
+      }).limit(1);
 
-      const { username, role, _id } = user;
-      res.send(
-        new Response(ResponseStrings.SUCCESS, {
-          username,
-          role,
-          _id,
-        })
-      );
+      if(user) {
+        const { username, role, _id } = user;
+          res.send(
+            new Response(ResponseStrings.SUCCESS, {
+              username,
+              role,
+              _id,
+            })
+          );
+      }
+      return res.send(new Response(ResponseStrings.ERROR, `Coudln't find record with username: ${req.params.username}`))
     } catch (error) {
       res.send(new Response(ResponseStrings.ERROR, error.message));
     }
@@ -85,19 +99,12 @@ module.exports = {
       }
     }
 
-    /**
-     * @todo refactor into async await
-     */
-    User.findByIdAndUpdate(user_id, req.body, {
-      new: true,
-    })
-      .then((updated) => {
-        return res.send(new Response(ResponseStrings.SUCCESS, updated));
-      })
-      .catch((error) => {
-        console.log(error.message);
-        return res.send(new Response(ResponseStrings.ERROR, error.message));
-      });
+    try {
+      const updated = await User.findByIdAndUpdate(user_id, {$set: req.body});
+      return res.send(new Response(ResponseStrings.SUCCESS, updated))
+    } catch (error) {
+      return res.send(new Response(ResponseStrings.ERROR, error.message))
+    }
   },
 
   delete: async (req, res) => {
