@@ -26,9 +26,11 @@ module.exports = {
       let { id, username, role } = user;
 
       if (!user)
-        return res.send(
-          new Response(ResponseStrings.ERROR, {error: "Error creating new user"})
-        );
+        return res.render(
+          'user/register', {
+            error: 'Unable to create user'
+          }
+        )
 
       /**
        * @todo Temporary, only render Dashboard when:
@@ -37,11 +39,11 @@ module.exports = {
        * 3* Authenticated but navigates to /dashboard
        * 4* Try rendering user/dashboard, passing new Response(RS.SUCCESS, {user: the actual user})
        */
-      return res.render('user/dashboard', new Response(ResponseStrings.SUCCESS, {user: {
+      return res.render('user/dashboard', {user: {
         id, 
         username, 
         role 
-      }}))
+      }})
       
     } catch (error) {
       // Handle error for duplicated username keys
@@ -50,16 +52,11 @@ module.exports = {
       } else {
         for (const [key, value] of Object.entries(error.errors)) {
           if (key == "role") {
-            return res.send(
-              new Response(
-                ResponseStrings.ERROR,
-                "Invalid value for option role"
-              )
-            );
+            return res.render('user/register', {error: `The option for role field must be a valid option: ${req.body.role}`});
           }
         }
 
-        return res.send(new Response(ResponseStrings.ERROR, error.message));
+        return res.render('user/register', {error: error.message})
       }
     }
   },
@@ -72,7 +69,7 @@ module.exports = {
 
       if(user) {
         const { username, role, _id } = user;
-          res.send(
+          return res.send(
             new Response(ResponseStrings.SUCCESS, {
               username,
               role,
@@ -82,7 +79,7 @@ module.exports = {
       }
       return res.send(new Response(ResponseStrings.ERROR, `Coudln't find record with username: ${req.params.username}`))
     } catch (error) {
-      res.send(new Response(ResponseStrings.ERROR, error.message));
+      return res.send(new Response(ResponseStrings.ERROR, error.message));
     }
   },
 
@@ -95,40 +92,40 @@ module.exports = {
         let hashedPassword = await utilities.hashPassword(req.body.password);
         req.body.password = hashedPassword;
       } catch (error) {
-        return res.send(new Response(ResponseStrings.ERROR, error.message));
+        return res.render('user/update', {error: error.message})
       }
     }
 
+    const user = await User.findById(user_id);
+    if(!user) return res.render('user/update', {error: `Could not find user with id ${user_id}`})
+
     try {
       const updated = await User.findByIdAndUpdate(user_id, {$set: req.body});
-      return res.send(new Response(ResponseStrings.SUCCESS, updated))
+      return res.render('user/update', {message: `Successfully updated ${user_id}`})
     } catch (error) {
-      return res.send(new Response(ResponseStrings.ERROR, error.message))
+      return res.render('user/update', {error: error.message})
     }
   },
-
+  /**
+   * @todo What to do with this route 
+   */
   delete: async (req, res) => {
     const { user_id } = req.params;
 
     try {
       const user = await User.findById(user_id);
-      if (user == null) {
-        return res.send(
-          new Response(
-            ResponseStrings.ERROR,
-            `Couldn't find any user with id: ${user_id}`
-          )
-        );
+      if (!user) {
+        return res.render('user/profile', {error: `Couldn't find any user with id: ${user_id}`})
       }
-      // const deleted = await Report.deleteOne({_id: id});
-      const deleted = await User.deleteOne({
+      
+      const deleted = await User.findByIdAndDelete({
         _id: user_id,
       });
-      // const deleted = await User.findByIdAndDelete(user_id);
-      return res.send(new Response(ResponseStrings.SUCCESS, deleted));
+  
+      return res.redirect('/', {message: `User with id: ${deleted.id} has been deleted`})
     } catch (e) {
       console.log(e.message);
-      res.send(new Response(ResponseStrings.ERROR, e.message));
+      return res.render('/', {error: error.message});
     }
   },
 };

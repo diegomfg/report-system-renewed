@@ -20,7 +20,6 @@ connection();
 const pagesRoutes = require('./routes/pages.routes')
 const userRoutes = require('./routes/user.routes')
 const reportRoutes = require('./routes/report.routes')
-const registerRoutes = require('./routes/register.routes')
 const port = process.env.PORT || 8080;
 /**
  * Setup main Express application.
@@ -40,7 +39,7 @@ hbs.registerPartials(__dirname + '/public/views/partials')
 /**
  * Setup logger
  */
-app.use(morgan('common'))
+// app.use(morgan('common'))
 
 /**
  * Middleware set up
@@ -49,23 +48,13 @@ app.use(express.json())
 app.use(cors())
 app.use(middleware.general)
 /**
- * Set up the external routes.
- */
-
-app.get('/', (req, res) => {
-    res.send({
-        "/users": "Users API",
-        "/reports": "Reports API"
-    })
-})
-/**
+ * Routes. All defined in their external files.
  * @todo Add middleware to protect routes
  * @todo Use authorization token middleware
  */
 app.use('/', pagesRoutes)
 app.use('/users', userRoutes)
 app.use('/reports', reportRoutes)
-app.use('/register', registerRoutes)
 
 app.listen(port, () => {
     console.log(`Service running at port: ${port}`)

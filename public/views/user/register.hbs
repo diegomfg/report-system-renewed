@@ -1,5 +1,8 @@
 {{> header }}
 <div class="ui raised very padded text container segment" id="register-container">
+  {{#if error}}
+    <span>{{error}}</span>
+  {{/if}}
   <h1 class="ui dividing header">Register</h1>
   <form action="/users/" method="post" class="ui form">
     <div class="field">
