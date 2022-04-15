@@ -7,9 +7,9 @@ module.exports = {
 
         try {
             const reports = await Report.find();
-        return res.send(new Response(ResponseStrings.SUCCESS, reports))
+        return res.render('report/all-reports', {reports: reports})
         } catch (error) {
-            return res.send(new Response(ResponseStrings.ERROR, error.message))
+            return res.render('report/error', {error: error.message})
         }
     },
 
@@ -18,11 +18,11 @@ module.exports = {
         const { id } = req.params;
 
         try {
-            const report = await Report.findOne({id});
-            if(!report) return res.send(new Response(ResponseStrings.ERROR, `No report found with id: ${ id }`))
-            return res.send(new Response(ResponseStrings.SUCCESS, report))
+            const report = await Report.findById(id);
+            if(!report) return res.render('report/error', {error: `Coudln't find report with id ${id}`})
+            return res.render('report/single', {report: report})
         } catch (error) {
-            return res.send(new Response(ResponseStrings.ERROR, error.message))
+            return res.render('report/error', {error: error.message})
         }
     },
 
@@ -30,7 +30,7 @@ module.exports = {
 
         try {
             const created = await Report.create(req.body);
-            return res.send(new Response(ResponseStrings.SUCCESS, created))
+            return res.render('report/all-reports', {message: `Successfully created: ${created.title}`})
         } catch (error) {
             return res.send(new Response(ResponseStrings.ERROR, error.message))
         }
@@ -41,7 +41,7 @@ module.exports = {
          const { id } = req.params;
 
          try {
-             const updated = await Report.updateOne({id}, {...req.body})
+             const updated = await Report.findByIdAndUpdate(id, {$set: req.body})
              if(updated.modifiedCount != 0) return res.status(200).send(new Response(ResponseStrings.SUCCESS, "Successfully updated record"))
 
              return res.send(new Response(ResponseStrings.ERROR, "Unable to update record"))
@@ -57,11 +57,11 @@ module.exports = {
         const { id } = req.params;
 
         try {
-            const report = await Report.findOne({id})
-            if(report == null) {
+            const report = await Report.findById(id)
+            if(!report) {
                 return res.send(new Response(ResponseStrings.ERROR, `No report found with id ${ id }`))
-            } 
-            const deleted = await Report.deleteOne({_id: id});
+            }
+            const deleted = await Report.findByIdAndDelete(id);
             return res.send(new Response(ResponseStrings.SUCCESS, deleted))
         } catch (error) {
             return res.send(new Response(ResponseStrings.ERROR, error.message))

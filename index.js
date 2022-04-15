@@ -39,7 +39,7 @@ hbs.registerPartials(__dirname + '/public/views/partials')
 /**
  * Setup logger
  */
-app.use(morgan('common'))
+// app.use(morgan('common'))
 
 /**
  * Middleware set up
@@ -48,16 +48,7 @@ app.use(express.json())
 app.use(cors())
 
 /**
- * Set up the external routes.
- */
-
-app.get('/', (req, res) => {
-    res.send({
-        "/users": "Users API",
-        "/reports": "Reports API"
-    })
-})
-/**
+ * Routes. All defined in their external files.
  * @todo Add middleware to protect routes
  * @todo Use authorization token middleware
  */

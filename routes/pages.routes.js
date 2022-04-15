@@ -1,4 +1,5 @@
 const ResponseStrings = require('../constants/ResponseStrings');
+const PagesController = require('../controllers/PagesController');
 const Response = require('../models/Response');
 
 const pagesRouter = require('express').Router({mergeParams: true})
