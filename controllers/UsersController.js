@@ -4,10 +4,6 @@ const User = require("../models/User");
 const utilities = require("../utils/utilities");
 
 module.exports = {
-  /**
-   * @todo remove this endpoint
-   * @todo Secure all endpoints
-   */
   findAll: async (req, res) => {
     try {
       const allUsers = await User.find({}).exec();
@@ -17,6 +13,12 @@ module.exports = {
     }
   },
 
+  /**
+   * Should be called after url callback in Auth0
+   * @param {*} req 
+   * @param {*} res 
+   * @returns user
+   */
   create: async (req, res) => {
     console.log(`Request body at user controller:`, req.body)
 
