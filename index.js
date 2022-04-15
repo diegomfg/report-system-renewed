@@ -20,7 +20,6 @@ connection();
 const pagesRoutes = require('./routes/pages.routes')
 const userRoutes = require('./routes/user.routes')
 const reportRoutes = require('./routes/report.routes')
-const registerRoutes = require('./routes/register.routes')
 const port = process.env.PORT || 8080;
 /**
  * Setup main Express application.
@@ -47,7 +46,7 @@ app.use(morgan('common'))
  */
 app.use(express.json())
 app.use(cors())
-app.use(middleware.general)
+
 /**
  * Set up the external routes.
  */
@@ -65,7 +64,11 @@ app.get('/', (req, res) => {
 app.use('/', pagesRoutes)
 app.use('/users', userRoutes)
 app.use('/reports', reportRoutes)
-app.use('/register', registerRoutes)
+
+/**
+ * @todo Define middleware after routes?
+ */
+app.use(middleware.general)
 
 app.listen(port, () => {
     console.log(`Service running at port: ${port}`)

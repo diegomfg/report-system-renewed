@@ -72,7 +72,7 @@ module.exports = {
 
       if(user) {
         const { username, role, _id } = user;
-          res.send(
+          return res.send(
             new Response(ResponseStrings.SUCCESS, {
               username,
               role,
@@ -82,7 +82,7 @@ module.exports = {
       }
       return res.send(new Response(ResponseStrings.ERROR, `Coudln't find record with username: ${req.params.username}`))
     } catch (error) {
-      res.send(new Response(ResponseStrings.ERROR, error.message));
+      return res.send(new Response(ResponseStrings.ERROR, error.message));
     }
   },
 
