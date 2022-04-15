@@ -1,7 +1,4 @@
-const ResponseStrings = require('../constants/ResponseStrings');
 const PagesController = require('../controllers/PagesController');
-const Response = require('../models/Response');
-
 const pagesRouter = require('express').Router({mergeParams: true})
 
 pagesRouter.get('/', (req, res)=>{
@@ -18,9 +15,11 @@ pagesRouter.get('/dashboard', (req, res)=>{
      * @param {Express.Response} req.odic.user
      * to the view
      */
-    res.render('user/dashboard', {user: {username: "diegomfg"}})
+    res.render('user/dashboard', {user: {username: "localusername"}})
 })
 
-
+pagesRouter.get('/logout', (req, res) => {
+    return res.send("logged out")
+})
 
 module.exports = pagesRouter;
