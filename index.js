@@ -1,14 +1,14 @@
-const express = require('express')
-const morgan = require('morgan')
-const hbs = require('hbs')
-const cors = require('cors')
+const express    = require('express')
+const morgan     = require('morgan')
+const hbs        = require('hbs')
+const cors       = require('cors')
 const middleware = require('./middleware/middleware')
 
 /**
  * @summary Configure environment variables
  * Loads a local .env file with configuration variables such as PORT, local_db_uri, prod_db_uri
  */
-const dotenv = require('dotenv').config()
+const dotenv     = require('dotenv').config()
 
 
 
@@ -27,10 +27,10 @@ connection();
  * @summary Import the routes for the two main entities.
  * Each entity has its own API.
  */
-const pagesRoutes = require('./routes/pages.routes')
-const userRoutes = require('./routes/user.routes')
+const pagesRoutes  = require('./routes/pages.routes')
+const userRoutes   = require('./routes/user.routes')
 const reportRoutes = require('./routes/report.routes')
-const port = process.env.PORT || 8080;
+const port         = process.env.PORT || 8080;
 
 
 
@@ -51,8 +51,8 @@ const app = express();
  * @summary Serve static content and set up view engine config
  */
 app.set('view engine', 'hbs')
-app.use(express.static(__dirname + '/public'))
 app.set('views','public/views/')
+app.use(express.static(__dirname + '/public'))
 hbs.registerPartials(__dirname + '/public/views/partials')
 
 /**
@@ -89,7 +89,7 @@ app.use('/reports', reportRoutes)
 /**
  * @todo Last middleware
  */
-app.use(middleware.general)
+app.use(middleware.errorHandler)
 
 
 

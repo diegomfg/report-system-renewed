@@ -4,12 +4,12 @@ const User = require("../models/User");
 const utilities = require("../utils/utilities");
 
 module.exports = {
-  findAll: async (req, res) => {
+  findAll: async (req, res, next) => {
     try {
-      const allUsers = await User.find({}).exec();
+      const allUsers = await User.find({}, {username: 1, role: 1}).exec();
       res.status(200).send(new Response(ResponseStrings.SUCCESS, allUsers));
     } catch (error) {
-      res.send(error.message);
+      next(error)
     }
   },
 
@@ -19,7 +19,7 @@ module.exports = {
    * @param {*} res 
    * @returns user
    */
-  create: async (req, res) => {
+  create: async (req, res, next) => {
     console.log(`Request body at user controller:`, req.body)
 
     try {
@@ -48,7 +48,9 @@ module.exports = {
       }})
       
     } catch (error) {
-      // Handle error for duplicated username keys
+      /**
+       * Call next(error) on this. The error handler middleware will handle this.
+       */
       if (error.code == 11000) {
         return res.render('user/register', {error: `Username ${req.body.username} is already in use`});
       } else {
@@ -63,7 +65,7 @@ module.exports = {
     }
   },
 
-  findByUsername: async (req, res) => {
+  findByUsername: async (req, res, next) => {
     try {
       const user = await User.findOne({
         username: req.params.username,
@@ -81,11 +83,11 @@ module.exports = {
       }
       return res.send(new Response(ResponseStrings.ERROR, `Coudln't find record with username: ${req.params.username}`))
     } catch (error) {
-      return res.send(new Response(ResponseStrings.ERROR, error.message));
+      next(error)
     }
   },
 
-  update: async (req, res) => {
+  update: async (req, res, next) => {
     const { user_id } = req.params;
 
     // If the request body contains password, password must be re-hashed
@@ -94,7 +96,8 @@ module.exports = {
         let hashedPassword = await utilities.hashPassword(req.body.password);
         req.body.password = hashedPassword;
       } catch (error) {
-        return res.render('user/update', {error: error.message})
+        next(error)
+        // return res.render('user/update', {error: error.message})
       }
     }
 
@@ -105,13 +108,14 @@ module.exports = {
       const updated = await User.findByIdAndUpdate(user_id, {$set: req.body});
       return res.render('user/update', {message: `Successfully updated ${user_id}`})
     } catch (error) {
-      return res.render('user/update', {error: error.message})
+      next(error)
+      // return res.render('user/update', {error: error.message})
     }
   },
   /**
    * @todo What to do with this route 
    */
-  delete: async (req, res) => {
+  delete: async (req, res, next) => {
     const { user_id } = req.params;
 
     try {
@@ -125,9 +129,8 @@ module.exports = {
       });
   
       return res.redirect('/', {message: `User with id: ${deleted.id} has been deleted`})
-    } catch (e) {
-      console.log(e.message);
-      return res.render('/', {error: error.message});
+    } catch (error) {
+      next(error)
     }
   },
 };

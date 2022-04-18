@@ -1,0 +1,14 @@
+{{>header}}
+<h1>You're looking at: All Reports Page</h1>
+
+<ul class="reports_list">
+    {{#each reports}}
+    <div class="card">
+        <h1><b>Title: </b>{{this.title}}</h1>
+        <p><b>Body:</b> {{this.body}}</p>
+        <span><a href="/reports/{{this.id}}">{{this.id}}</a></span>
+    </div>
+    <hr>
+    {{/each}}
+</ul>
+{{>footer}}
