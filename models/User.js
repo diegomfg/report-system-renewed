@@ -1,27 +1,27 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+
 const SALT_WORK_FACTOR = 12;
 const validationStrings = require('../constants/UserValidationStrings')
-
 /**
- * @todo Research about custom validation strings. Current setting is not working.
+ * @todo Fix user schema validations :(
  */
-
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
+        required: [true, validationStrings.USERNAME_REQUIRED_USERNAME_FIELD],
         unique: true,
         min: [3, validationStrings.USERNAME_TOO_SHORT]
     },
     password: {
         type: String,
+        required: [true, validationStrings.PASSWORD_REQUIRED_FIELD],
         min: [4, validationStrings.PASSWORD_MIN_LENGTH_MSG]
     },
     role: {
         type: String,
         enum: ['user', 'admin'],
-        required: [true, validationStrings.INVALID_ROLE]
+        required: [true, validationStrings.ROLE_REQUIRED_FIELD]
     }
 });
 

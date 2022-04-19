@@ -2,16 +2,12 @@ const express = require('express');
 
 module.exports = {
   routeValidator: (req, res, next) => {
+    // Validates presence of session data from Auth0
     return next();
   },
 
-  tokenValidator: (req, res, next) => {
-    if (req.get('authentication')) {
-      return next();
-    }
-  },
-
-  general: (req, res, next) => {
-    return next();
+  errorHandler: (err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
   }
 }
