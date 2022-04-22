@@ -12,6 +12,7 @@ module.exports = {
   },
 
   general: (req, res, next) => {
+    console.log(`[GENERAL MIDDLEWARE]: Incoming request`)
     next()
   }
 }

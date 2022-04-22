@@ -9,14 +9,14 @@ const pagesRouter = require('express').Router({mergeParams: true})
  */
 pagesRouter.get('/', PagesController.renderIndexPage)
 
-pagesRouter.get('/login', PagesController.renderLoginPage)
+// pagesRouter.get('/login', PagesController.renderLoginPage)
 
-pagesRouter.get('/register', PagesController.renderRegisterPage)
+// pagesRouter.get('/register', PagesController.renderRegisterPage)
 
 pagesRouter.get('/dashboard', PagesController.renderDashboard)
 
-pagesRouter.post('/login', PagesController.postLoginPage)
+// pagesRouter.post('/login', PagesController.postLoginPage)
 
-pagesRouter.post('/register', PagesController.postRegisterPage)
+// pagesRouter.post('/register', PagesController.postRegisterPage)
 
 module.exports = pagesRouter;

@@ -4,27 +4,13 @@ module.exports = {
 
     renderIndexPage: (req, res) => {
         return res.render('index', {
-            PageTitle: 'Index'
+            PageTitle: 'Index',
+            isAuth: req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
         })
     },
 
-    renderRegisterPage: (req, res) => {
-       return res.render('user/register', {
-           PageTitle: 'Register'
-       })
-    },
-
-    renderLoginPage: (req, res)=>{
-        return res.render('user/login', {PageTitle: 'Login'})
-    },
-
-    postRegisterPage: usersController.create,
-
-    postLoginPage: (req, res)=>{
-        return res.send("Attempt to log in")
-    },
-
     renderDashboard: (req, res)=>{
-        return res.render('user/dashboard', {user: {username: 'diegomfg'}, PageTitle: 'Dashboard'})
+        // req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
+        return res.render('user/dashboard', {user: req.oidc.user })
     }
 }
