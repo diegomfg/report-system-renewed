@@ -4,8 +4,6 @@ const SALT_WORK_FACTOR = 12;
 
 module.exports = {
   hashPassword: async function (textPassword) {
-
-
     try {
       let salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
       let hash = bcrypt.hash(textPassword, salt);

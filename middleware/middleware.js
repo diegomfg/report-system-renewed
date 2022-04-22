@@ -6,8 +6,14 @@ module.exports = {
     return next();
   },
 
-  errorHandler: (err, req, res, next) => {
-    console.error(err.stack)
-    res.status(500).send('Something broke!')
+  tokenValidator: (req, res, next) => {
+    if (req.get('Autorization')) {
+      return next();
+    } else console.log("No authorization found")
+  },
+
+  general: (req, res, next) => {
+    console.log(`[GENERAL MIDDLEWARE]: Incoming request`)
+    next()
   }
 }

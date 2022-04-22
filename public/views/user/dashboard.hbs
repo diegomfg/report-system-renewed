@@ -1,6 +1,14 @@
 {{> header }} 
     <h1>Dashboard</h1>
     <div>
-        <code>Welcome {{user.username}}!!</code>
+        {{#if user}}
+            <code>Welcome {{user.email}}!!</code>
+        {{/if}}
+
+        {{#if error}}
+            <code>Some kind of error</code>
+        {{/if}}
+
+        
     </div>
 {{> footer}}
