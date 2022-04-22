@@ -59,7 +59,7 @@ hbs.registerPartials(__dirname + '/public/views/partials')
 /**
  * Setup logger
  */
-// app.use(morgan('common'))
+app.use(morgan('dev'))
 
 /**
  * @summary Middleware set up
@@ -67,10 +67,6 @@ hbs.registerPartials(__dirname + '/public/views/partials')
 app.use(express.json())
 app.use(cors())
 app.use(middleware.general)
-app.use((req, res, next) => {
-    // res.locals.user = req.oidc.user
-    next()
-})
 /**
  * @summary
  * Routes. All defined in their external files.
@@ -85,7 +81,7 @@ app.use('/reports', reportRoutes)
  * @todo Set up Error handler
  */
 app.use((err, req, res, next) => {
-    return process.env.NODE_ENV == 'development' ? res.status(500).send(err) : res.status(404).send('Something broke!!')
+    return res.send(err)
 })
 
 app.listen(port, () => {

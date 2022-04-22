@@ -3,14 +3,17 @@ const usersController = require('./UsersController')
 module.exports = {
 
     renderIndexPage: (req, res) => {
+        console.log(req.oidc)
         return res.render('index', {
             PageTitle: 'Index',
-            isAuth: req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
+            isAuth: req.oidc.isAuthenticated()
         })
     },
 
     renderDashboard: (req, res)=>{
-        // req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
-        return res.render('user/dashboard', {user: req.oidc.user })
+        return res.render('user/dashboard',
+        {
+            user: req.oidc.user 
+        })
     }
 }

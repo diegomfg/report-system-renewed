@@ -9,11 +9,12 @@ module.exports = {
   tokenValidator: (req, res, next) => {
     if (req.get('Autorization')) {
       return next();
-    } else console.log("No authorization found")
+    } else console.log("[Token Validator]: - No authorization found")
   },
 
   general: (req, res, next) => {
-    console.log(`[GENERAL MIDDLEWARE]: Incoming request`)
+    console.log(`[General Middleware]: - Incoming request`)
+    console.log('[General Middleware]: - req.oidc.user: ', req.oidc.user)
     next()
   }
 }

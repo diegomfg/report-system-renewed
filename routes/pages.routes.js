@@ -1,6 +1,6 @@
 const PagesController = require('../controllers/PagesController');
 const pagesRouter = require('express').Router({mergeParams: true})
-
+const { requiresAuth } = require('express-openid-connect')
 pagesRouter.get('/', (req, res)=>{
     res.render('index', {PageTitle: "Welcome"})
 })
@@ -10,14 +10,6 @@ pagesRouter.get('/', (req, res)=>{
  */
 pagesRouter.get('/', PagesController.renderIndexPage)
 
-// pagesRouter.get('/login', PagesController.renderLoginPage)
-
-// pagesRouter.get('/register', PagesController.renderRegisterPage)
-
-pagesRouter.get('/dashboard', PagesController.renderDashboard)
-
-// pagesRouter.post('/login', PagesController.postLoginPage)
-
-// pagesRouter.post('/register', PagesController.postRegisterPage)
+pagesRouter.get('/dashboard', requiresAuth(), PagesController.renderDashboard)
 
 module.exports = pagesRouter;
