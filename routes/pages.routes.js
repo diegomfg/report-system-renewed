@@ -1,11 +1,12 @@
-const ResponseStrings = require('../constants/ResponseStrings');
 const PagesController = require('../controllers/PagesController');
-const Response = require('../models/Response');
-
 const pagesRouter = require('express').Router({mergeParams: true})
 
+pagesRouter.get('/', (req, res)=>{
+    res.render('index', {PageTitle: "Welcome"})
+})
+
 /**
- * @abstract Render the homepage
+ * @todo Authenticate this route
  */
 pagesRouter.get('/', PagesController.renderIndexPage)
 

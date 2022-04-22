@@ -20,7 +20,7 @@ module.exports = {
         try {
             const report = await Report.findById(id);
             if(!report) return res.render('report/error', {error: `Coudln't find report with id ${id}`})
-            return res.render('report/single', {report: report})
+            return res.render('report/single', {report: report, PageTitle: `ID: ${report.id}`})
         } catch (error) {
             return res.render('report/error', {error: error.message})
         }
@@ -32,7 +32,7 @@ module.exports = {
             const created = await Report.create(req.body);
             return res.render('report/all-reports', {message: `Successfully created: ${created.title}`})
         } catch (error) {
-            return res.send(new Response(ResponseStrings.ERROR, error.message))
+            return res.render('report/error', {error})
         }
     },
 

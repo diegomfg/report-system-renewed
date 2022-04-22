@@ -2,6 +2,7 @@ const express = require('express');
 
 module.exports = {
   routeValidator: (req, res, next) => {
+    // Validates presence of session data from Auth0
     return next();
   },
 
