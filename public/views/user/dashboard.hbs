@@ -1,0 +1,16 @@
+{{> header }} 
+    <h1>Dashboard</h1>
+    <a href="/logout">Logout</a>
+    <div>
+        {{#if user}}
+            <p>This works... {{user.nickname}}</p>
+            <code>Welcome {{user.email}}!!</code>
+        {{/if}}
+
+        {{#if error}}
+            <code>Some kind of error</code>
+        {{/if}}
+
+        
+    </div>
+{{> footer}}

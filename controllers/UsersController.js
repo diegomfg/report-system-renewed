@@ -1,93 +1,136 @@
-const User = require("../models/User")
+const ResponseStrings = require("../constants/ResponseStrings");
+const Response = require("../models/Response");
+const User = require("../models/User");
+const utilities = require("../utils/utilities");
 
 module.exports = {
-    /**
-     * @todo Refactor into promise based functions
-     * @param {Express.Request} req 
-     * @param {Express.Response} res 
-     */
-    all: async (req, res) => {
-        try {
-            res.send(await User.find({}).exec())
-        } catch (error) {
-            res.send(error.message)
+  findAll: async (req, res, next) => {
+    try {
+      const allUsers = await User.find({}, {username: 1, role: 1}).exec();
+      res.status(200).send(new Response(ResponseStrings.SUCCESS, allUsers));
+    } catch (error) {
+      next(error)
+    }
+  },
+
+  /**
+   * Should be called after url callback in Auth0
+   * @param {*} req 
+   * @param {*} res 
+   * @returns user
+   */
+  create: async (req, res, next) => {
+    console.log(`Request body at user controller:`, req.body)
+
+    try {
+
+      let user = await User.create(req.body);
+      let { id, username, role } = user;
+
+      if (!user)
+        return res.render(
+          'user/register', {
+            error: 'Unable to create user'
+          }
+        )
+
+      /**
+       * @todo Temporary, only render Dashboard when:
+       * 1* Register
+       * 2* Login
+       * 3* Authenticated but navigates to /dashboard
+       * 4* Try rendering user/dashboard, passing new Response(RS.SUCCESS, {user: the actual user})
+       */
+      return res.render('user/dashboard', {user: {
+        id, 
+        username, 
+        role 
+      }})
+      
+    } catch (error) {
+      /**
+       * Call next(error) on this. The error handler middleware will handle this.
+       */
+      if (error.code == 11000) {
+        return res.render('user/register', {error: `Username ${req.body.username} is already in use`});
+      } else {
+        for (const [key, value] of Object.entries(error.errors)) {
+          if (key == "role") {
+            return res.render('user/register', {error: `The option for role field must be a valid option: ${req.body.role}`});
+          }
         }
-    },
 
-    create: async (req, res) => {
-        try {
-            
-            
-            // let user = await User.create({
-            //     username: req.body.username,
-            //     password: req.body.password,
-            //     role: req.body.role
-            // })
+        return res.render('user/register', {error: error.message})
+      }
+    }
+  },
 
-            let user = await User.create(req.body)
-            
-            res.send({username: user?.username, id: user?.id, role: user?.role,})
-            
-        } catch (error) {
-            // Handle error for duplicated username keys
-            if(error.code == 11000){
-                res.status(504).send({message: "Error: Username is already in use"})
-            } else res.send(error.message)
-        }
-    },
+  findByUsername: async (req, res, next) => {
+    try {
+      const user = await User.findOne({
+        username: req.params.username,
+      }).limit(1);
 
-    getByUsername: (req, res) => {
-        User.findOne({
-            username: req.params.username
-        }).exec().then((user) => {
-
-            const {
-                username,
-                role,
-                _id
-            } = user;
-            res.send({
-                username,
-                role,
-                _id
+      if(user) {
+        const { username, role, _id } = user;
+          return res.send(
+            new Response(ResponseStrings.SUCCESS, {
+              username,
+              role,
+              _id,
             })
+          );
+      }
+      return res.send(new Response(ResponseStrings.ERROR, `Coudln't find record with username: ${req.params.username}`))
+    } catch (error) {
+      next(error)
+    }
+  },
 
-        }).catch((error) => res.send(error.message))
-    },
+  update: async (req, res, next) => {
+    const { user_id } = req.params;
 
-    update: async (req, res) => {
-        /**
-         * @TODO Add support for profile images and descriptions
-         */
-        const id = req.params.id;
-        // const user = await User.findOne({id}).exec();
-
-        try {
-
-            const updated = await User.updateOne({
-                id
-            }, {
-                ...req.body
-            })
-            res.send({
-                updated
-            })
-
-        } catch (error) {
-            res.send(error.message)
-        }
-    },
-
-    delete: (req, res) => {
-        
-        const { id } = req.params;
-
-        User.deleteOne({id}).exec()
-        .then((deleted) => res.send(deleted, {message: "deleted"}))
-        .catch((error) => {
-            console.log(error)
-            res.send(error.message)
-        })
+    // If the request body contains password, password must be re-hashed
+    if (req.body.password) {
+      try {
+        let hashedPassword = await utilities.hashPassword(req.body.password);
+        req.body.password = hashedPassword;
+      } catch (error) {
+        next(error)
+        // return res.render('user/update', {error: error.message})
+      }
     }
 
-}
+    const user = await User.findById(user_id);
+    if(!user) return res.render('user/update', {error: `Could not find user with id ${user_id}`})
+
+    try {
+      const updated = await User.findByIdAndUpdate(user_id, {$set: req.body});
+      return res.render('user/update', {message: `Successfully updated ${user_id}`})
+    } catch (error) {
+      next(error)
+      // return res.render('user/update', {error: error.message})
+    }
+  },
+  /**
+   * @todo What to do with this route 
+   */
+  delete: async (req, res, next) => {
+    const { user_id } = req.params;
+
+    try {
+      const user = await User.findById(user_id);
+      if (!user) {
+        return res.render('user/profile', {error: `Couldn't find any user with id: ${user_id}`})
+      }
+      
+      const deleted = await User.findByIdAndDelete({
+        _id: user_id,
+      });
+  
+      return res.redirect('/', {message: `User with id: ${deleted.id} has been deleted`})
+    } catch (error) {
+      next(error)
+    }
+  },
+};

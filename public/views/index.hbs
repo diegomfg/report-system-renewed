@@ -1,0 +1,9 @@
+{{>header}}
+  <h2>Welcome to</h2>
+  <h1>Report System</h1>
+  <a href="/login">Login</a>
+  <a href="/logout">Logout</a>
+  {{#if isAuth }}
+    <a href="/dashboard">Dashboard</a>
+  {{/if}}
+{{>footer}}
