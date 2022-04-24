@@ -63,6 +63,7 @@ app.use(morgan('dev'))
 
 /**
  * @summary Middleware set up
+ * @todo Remove json middleware for form-data parsing?
  */
 app.use(express.json())
 app.use(cors())

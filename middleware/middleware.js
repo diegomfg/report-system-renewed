@@ -13,8 +13,6 @@ module.exports = {
   },
 
   general: (req, res, next) => {
-    console.log(`[General Middleware]: - Incoming request`)
-    console.log('[General Middleware]: - req.oidc.user: ', req.oidc.user)
     next()
   }
 }

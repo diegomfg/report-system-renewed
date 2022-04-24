@@ -1,6 +1,8 @@
 {{>header}}
 <h1>You're looking at: All Reports Page</h1>
-
+{{#if message }}
+    <p>{{ message }}</p>
+{{/if}}
 <ul class="reports_list">
     {{#each reports}}
     <div class="card">

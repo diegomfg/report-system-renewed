@@ -6,6 +6,6 @@ const { requiresAuth } = require('express-openid-connect')
  */
 pagesRouter.get('/', PagesController.renderIndexPage)
 
-pagesRouter.get('/dashboard', requiresAuth(),PagesController.renderDashboard)
+pagesRouter.get('/dashboard', requiresAuth(), PagesController.renderDashboard)
 
 module.exports = pagesRouter;
