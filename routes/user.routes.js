@@ -2,31 +2,19 @@ const userRouter = require('express').Router({
   mergeParams: true
 });
 
+const { requiresAuth } = require('express-openid-connect');
 const userController = require('../controllers/UsersController');
 
-/**
- * @todo Delete route
- */
-userRouter.get('/', userController.findAll)
-
-/**
- * @todo Delete route
- */
-userRouter.post('/', userController.create);
+userRouter.get('/', requiresAuth(), userController.findAll);
 
 /**
  * @todo Delete route. Moving to /user/profile
  */
-userRouter.get('/:username', userController.findByUsername);
+userRouter.get('/:username', requiresAuth(), userController.findByUsername);
 
 /**
  * @todo Maybe move to /user/profile/:user_id?
  */
-userRouter.put('/:user_id', userController.update)
-
-/**
- * @todo What to do here? Do we really need this route.
- */
-userRouter.delete('/:user_id', userController.delete)
+userRouter.put('/:user_id', requiresAuth(), userController.update)
 
 module.exports = userRouter;

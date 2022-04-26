@@ -9,19 +9,20 @@ const validationStrings = require('../constants/UserValidationStrings')
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: [true, validationStrings.USERNAME_REQUIRED_USERNAME_FIELD],
-        unique: true,
-        min: [3, validationStrings.USERNAME_TOO_SHORT]
     },
     password: {
         type: String,
-        required: [true, validationStrings.PASSWORD_REQUIRED_FIELD],
-        min: [4, validationStrings.PASSWORD_MIN_LENGTH_MSG]
+        required: true
     },
     role: {
         type: String,
         enum: ['user', 'admin'],
         required: [true, validationStrings.ROLE_REQUIRED_FIELD]
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
     }
 });
 

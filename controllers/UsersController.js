@@ -14,76 +14,26 @@ module.exports = {
   },
 
   /**
-   * Should be called after url callback in Auth0
-   * @param {*} req 
-   * @param {*} res 
-   * @returns user
+   * @todo Call back here after login/signup
+   * By default, users are being stored on db only after signing up with email, username and password.
+   * Users login in with Google OAuth are not being stored since Auth0 actions only run on 'create'
    */
-  create: async (req, res, next) => {
-    console.log(`Request body at user controller:`, req.body)
-
-    try {
-
-      let user = await User.create(req.body);
-      let { id, username, role } = user;
-
-      if (!user)
-        return res.render(
-          'user/register', {
-            error: 'Unable to create user'
-          }
-        )
-
-      /**
-       * @todo Temporary, only render Dashboard when:
-       * 1* Register
-       * 2* Login
-       * 3* Authenticated but navigates to /dashboard
-       * 4* Try rendering user/dashboard, passing new Response(RS.SUCCESS, {user: the actual user})
-       */
-      return res.render('user/dashboard', {user: {
-        id, 
-        username, 
-        role 
-      }})
-      
-    } catch (error) {
-      /**
-       * Call next(error) on this. The error handler middleware will handle this.
-       */
-      if (error.code == 11000) {
-        return res.render('user/register', {error: `Username ${req.body.username} is already in use`});
-      } else {
-        for (const [key, value] of Object.entries(error.errors)) {
-          if (key == "role") {
-            return res.render('user/register', {error: `The option for role field must be a valid option: ${req.body.role}`});
-          }
-        }
-
-        return res.render('user/register', {error: error.message})
-      }
-    }
+  create: (req, res) => {
+    // const {given_name, family_name, nickname, picture?, email} = req.oidc.user;
+    // const created_user = await User.create(data above);
+    // return res.render('/dashboard', {created_user})
+    return res.render('/dashboard')
   },
 
   findByUsername: async (req, res, next) => {
     try {
-      const user = await User.findOne({
-        username: req.params.username,
-      }).limit(1);
+      // console.log(req.params.username)
+      // console.log(req.oidc.user)
 
-      if(user) {
-        const { username, role, _id } = user;
-          return res.send(
-            new Response(ResponseStrings.SUCCESS, {
-              username,
-              role,
-              _id,
-            })
-          );
-      }
-      return res.send(new Response(ResponseStrings.ERROR, `Coudln't find record with username: ${req.params.username}`))
-    } catch (error) {
-      next(error)
+      const u = await User.find({email:req.oidc.user.email}, {password: 0, transaction: 0}).limit(1);
+      res.render('user/profile', {user: u[0]})
+    } catch (e) {
+      next(e)
     }
   },
 
@@ -110,27 +60,6 @@ module.exports = {
     } catch (error) {
       next(error)
       // return res.render('user/update', {error: error.message})
-    }
-  },
-  /**
-   * @todo What to do with this route 
-   */
-  delete: async (req, res, next) => {
-    const { user_id } = req.params;
-
-    try {
-      const user = await User.findById(user_id);
-      if (!user) {
-        return res.render('user/profile', {error: `Couldn't find any user with id: ${user_id}`})
-      }
-      
-      const deleted = await User.findByIdAndDelete({
-        _id: user_id,
-      });
-  
-      return res.redirect('/', {message: `User with id: ${deleted.id} has been deleted`})
-    } catch (error) {
-      next(error)
     }
   },
 };

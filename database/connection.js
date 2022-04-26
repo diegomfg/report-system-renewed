@@ -6,8 +6,9 @@ const connection_url = process.env.prod_db_uri;
  */
 module.exports = () => {
         Mongoose.connect(connection_url)
-        .then((mongoose)=> {
-            console.log("database connection ok")})
+        .then((db)=> {
+            console.log("database connection ok")
+        })
         .catch((error) => {
             // Throw the error || Handle the error
             console.log('Error:', error.message)

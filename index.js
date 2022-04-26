@@ -2,6 +2,7 @@ const express    = require('express')
 const morgan     = require('morgan')
 const hbs        = require('hbs')
 const cors       = require('cors')
+const bodyParser = require('body-parser')
 const middleware = require('./middleware/middleware')
 
 /**
@@ -15,11 +16,6 @@ dotenv.config()
  */
 const connection = require('./database/connection')
 connection();
-
-
-
-
-
 /**
  * @summary Import the routes for the two main entities.
  * Each entity has its own API.
@@ -29,15 +25,18 @@ const userRoutes   = require('./routes/user.routes')
 const reportRoutes = require('./routes/report.routes')
 const port = process.env.PORT || 8080;
 
+/**
+ * @summary The Auth0 authentication middleware
+ */
 const { auth } = require('express-openid-connect');
 
 const config = {
   authRequired: false,
   auth0Logout: true,
-  secret: 'dd7dd637972f52732cae5c3b62f2116d06e2e74a9ef2a4a73e8272fd45194890',
-  baseURL: 'http://localhost:8080',
-  clientID: 'qZZ8Txao0Oa1b1F0VBA79o739KQjDzq0',
-  issuerBaseURL: 'https://diegomfg.us.auth0.com'
+  secret: process.env.secret,
+  baseURL: process.env.baseURL,
+  clientID: process.env.clientID,
+  issuerBaseURL: process.env.issuerBaseURL
 };
 
 /**
@@ -45,10 +44,9 @@ const config = {
  * @param {Express.Application} app
  */
 const app = express();
-/**
- * auth router attaches /login, /logout, and /callback routes to the baseURL
- * */
-app.use(auth(config));
+
+
+
 /**
  * @summary Serve static content and set up view engine config
  */
@@ -56,6 +54,9 @@ app.set('view engine', 'hbs')
 app.set('views','public/views/')
 app.use(express.static(__dirname + '/public'))
 hbs.registerPartials(__dirname + '/public/views/partials')
+
+
+
 /**
  * Setup logger
  */
@@ -64,10 +65,16 @@ app.use(morgan('dev'))
 /**
  * @summary Middleware set up
  * @todo Remove json middleware for form-data parsing?
+ * auth router attaches /login, /logout, and /callback routes to the baseURL
  */
+app.use(auth(config));
 app.use(express.json())
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors())
 app.use(middleware.general)
+
+
+
 /**
  * @summary
  * Routes. All defined in their external files.
