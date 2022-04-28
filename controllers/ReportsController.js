@@ -1,7 +1,6 @@
 const ResponseStrings = require('../constants/ResponseStrings');
 const Report = require('../models/Report');
 const Response = require('../models/Response');
-const User = require('../models/User')
 
 module.exports = {
     findAll: async (req, res) => {
@@ -30,10 +29,6 @@ module.exports = {
     create: async (req, res) => {
 
         try {
-            // const { user } = req.oidc;
-            // const author = User.find({email: user.email})
-            // console.log('Potential Author: ', author)
-            // const created = await Report.create(req.body);
             console.log(req.body)
             return res.send("Test")
             // return res.render('report/all-reports', {message: `Successfully created: ${created.title}`})

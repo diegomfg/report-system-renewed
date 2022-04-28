@@ -1,5 +1,3 @@
-const usersController = require('./UsersController')
-
 module.exports = {
 
     renderIndexPage: (req, res) => {

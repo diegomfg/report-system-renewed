@@ -21,7 +21,6 @@ connection();
  * Each entity has its own API.
  */
 const pagesRoutes  = require('./routes/pages.routes')
-const userRoutes   = require('./routes/user.routes')
 const reportRoutes = require('./routes/report.routes')
 const port = process.env.PORT || 8080;
 
@@ -82,7 +81,6 @@ app.use(middleware.general)
  * @todo Use authorization token middleware
  */
 app.use('/', pagesRoutes)
-app.use('/users', userRoutes)
 app.use('/reports', reportRoutes)
 
 /**
