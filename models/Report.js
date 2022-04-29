@@ -11,7 +11,7 @@ const reportSchema = new mongoose.Schema({
     },
     body: {
         type: String,
-        required: [true, 'Comment must have a text body']
+        required: [true, 'Report must have a text body']
     },
     author: {
         // type: mongoose.Schema.Types.ObjectId

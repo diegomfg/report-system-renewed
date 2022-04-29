@@ -30,8 +30,11 @@ module.exports = {
 
         try {
             console.log(req.body)
-            return res.send("Test")
-            // return res.render('report/all-reports', {message: `Successfully created: ${created.title}`})
+            // Create the report and associate it with the current User
+            // To beging with, just create the report so the application can render it in the reports page
+            const created = await Report.create({title: req.body.title, body: req.body.body})
+
+            return res.redirect('reports/')
         } catch (error) {
             return res.render('report/error', {error})
         }

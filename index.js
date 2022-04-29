@@ -4,7 +4,6 @@ const hbs        = require('hbs')
 const cors       = require('cors')
 const bodyParser = require('body-parser')
 const middleware = require('./middleware/middleware')
-
 /**
  * @summary Configure environment variables
  * Loads a local .env file with configuration variables such as PORT, local_db_uri, prod_db_uri
@@ -47,12 +46,14 @@ const app = express();
 
 
 /**
- * @summary Serve static content and set up view engine config
+ * @summary Serve static content
+ * Set up views
+ * Register Handlebars partials
  */
 app.set('view engine', 'hbs')
 app.set('views','public/views/')
-app.use(express.static(__dirname + '/public'))
-hbs.registerPartials(__dirname + '/public/views/partials')
+app.use(express.static(__dirname + '/public/'))
+hbs.registerPartials(__dirname + '/public/views/partials/')
 
 
 
