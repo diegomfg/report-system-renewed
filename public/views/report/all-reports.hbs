@@ -3,12 +3,16 @@
 {{#if message }}
     <p>{{ message }}</p>
 {{/if}}
+
+{{#if deletedReport }}
+    <p>Deleted: {{deletedReport.title}}</p>
+{{/if}}
 <ul class="reports_list">
     {{#each reports}}
     <div class="card">
         <h1><b>Title: </b>{{this.title}}</h1>
         <p><b>Body:</b> {{this.body}}</p>
-        <span><a href="/reports/{{this.id}}">{{this.id}}</a></span>
+        <span><a href="/reports/{{this.id}}">View</a></span>
     </div>
     <hr>
     {{/each}}

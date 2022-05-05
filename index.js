@@ -88,7 +88,7 @@ app.use('/reports', reportRoutes)
  * @todo Set up Error handler
  */
 app.use((err, req, res, next) => {
-    return res.send(err)
+    res.render('index', {error: err})
 })
 
 app.listen(port, () => {

@@ -1,3 +1,4 @@
+const { Mongoose, mongo } = require('mongoose');
 const ResponseStrings = require('../constants/ResponseStrings');
 const Report = require('../models/Report');
 const Response = require('../models/Response');
@@ -13,16 +14,16 @@ module.exports = {
         }
     },
 
-    findById: async (req, res) => {
+    findById: async (req, res, next) => {
 
         const { id } = req.params;
 
         try {
             const report = await Report.findById(id);
-            if(!report) return res.render('report/error', {error: `Coudln't find report with id ${id}`})
+            if(!report) return res.redirect(404, '/')
             return res.render('report/single', {report: report, PageTitle: `ID: ${report.id}`})
         } catch (error) {
-            return res.render('report/error', {error: error.message})
+            next(error)
         }
     },
 
@@ -34,12 +35,16 @@ module.exports = {
             // To beging with, just create the report so the application can render it in the reports page
             const created = await Report.create({title: req.body.title, body: req.body.body})
 
-            return res.redirect('reports/')
+            return res.redirect('/')
         } catch (error) {
-            return res.render('report/error', {error})
+            return next(error)
         }
     },
 
+    /**
+     * 
+     * @todo Validate request body
+     */
     update: async (req, res) => {
 
          const { id } = req.params;
@@ -59,14 +64,15 @@ module.exports = {
     delete: async (req, res) => {
 
         const { id } = req.params;
-
+        
         try {
             const report = await Report.findById(id)
             if(!report) {
-                return res.send(new Response(ResponseStrings.ERROR, `No report found with id ${ id }`))
+                return res.render('report/error', {error: `No report found with id: ${id}`});
             }
             const deleted = await Report.findByIdAndDelete(id);
-            return res.send(new Response(ResponseStrings.SUCCESS, deleted))
+            // Redirect to /reports with status message
+            return res.redirect('/')
         } catch (error) {
             return res.send(new Response(ResponseStrings.ERROR, error.message))
         }
