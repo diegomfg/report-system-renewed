@@ -14,7 +14,6 @@ const reportSchema = new mongoose.Schema({
         required: [true, 'Report must have a text body']
     },
     author: {
-        // type: mongoose.Schema.Types.ObjectId
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
@@ -23,16 +22,7 @@ const reportSchema = new mongoose.Schema({
     approved: {
         type: Boolean,
         default: false
-    },
-    // author: {
-    //     type: {
-    //     id: {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: "User"
-    //     }
-    // }
-    //     required: [true, validationStrings.AUTHOR_REQUIRED_FIELD]
-    // },
+    }
 })
 
 reportSchema.plugin(timeStamp);
