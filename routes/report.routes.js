@@ -1,5 +1,6 @@
 const reportRoutes = require('express').Router({mergeParams: true});
 const reportsController = require('../controllers/ReportsController');
+const Report = require('../models/Report');
 
 reportRoutes.get('/', reportsController.findAll);
 
@@ -9,14 +10,20 @@ reportRoutes.get('/create', (req, res) => {
 
 reportRoutes.post('/', reportsController.create)
 
-reportRoutes.get('/update/:id', (req, res) => {
-  return res.render('report/update', {PageTitle: "Update report"});
+reportRoutes.get('/update/:id', async (req, res) => {
+  
+  try {
+    const report = await Report.findById(req.params.id)
+    return res.render('report/update', {PageTitle: "Update report", report});
+  } catch (error) {
+    return next(error)
+  }
 })
+
+reportRoutes.post('/update/:id', reportsController.update)
 
 reportRoutes.get('/delete/:id', reportsController.delete)
 
 reportRoutes.get('/:id', reportsController.findById)
-
-reportRoutes.put('/:id', reportsController.update)
 
 module.exports = reportRoutes;

@@ -1,3 +1,11 @@
 {{>header}}
     <h1>This is update page</h1>
+
+    <form action="/reports/update/{{report.id}}" method="POST">
+        <label for="body">Title</label>
+        <input type="text" name="title" id="title" placeholder="{{report.title}}" value="{{report.title}}">
+        <label for="body">Body</label>
+        <textarea name="body" id=""body cols="30" rows="10" placeholder="{{report.body}}">{{report.body}}</textarea>
+        <button type="submit">Submit</button>
+    </form>
 {{>footer}}

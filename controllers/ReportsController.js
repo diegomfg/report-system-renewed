@@ -23,19 +23,18 @@ module.exports = {
             if(!report) return res.redirect(404, '/')
             return res.render('report/single', {report: report, PageTitle: `ID: ${report.id}`})
         } catch (error) {
-            next(error)
+            return next(error)
         }
     },
 
     create: async (req, res) => {
 
         try {
-            console.log(req.body)
             // Create the report and associate it with the current User
             // To beging with, just create the report so the application can render it in the reports page
             const created = await Report.create({title: req.body.title, body: req.body.body})
 
-            return res.redirect('/')
+            return res.redirect('/reports')
         } catch (error) {
             return next(error)
         }
@@ -45,23 +44,23 @@ module.exports = {
      * 
      * @todo Validate request body
      */
-    update: async (req, res) => {
+    update: async (req, res, next) => {
 
          const { id } = req.params;
-
+         console.log(req.body)
+         
          try {
              const updated = await Report.findByIdAndUpdate(id, {$set: req.body})
-             if(updated.modifiedCount != 0) return res.status(200).send(new Response(ResponseStrings.SUCCESS, "Successfully updated record"))
+             if(updated.modifiedCount != 0) return res.redirect('/reports')
 
-             return res.send(new Response(ResponseStrings.ERROR, "Unable to update record"))
+             return res.redirect(`/reports/${updated.id}`)
 
          } catch (error) {
-            console.log(error.message);
-            return res.send(new Response(ResponseStrings.ERROR, error.message))
+            return next(error)
          }
     },
 
-    delete: async (req, res) => {
+    delete: async (req, res, next) => {
 
         const { id } = req.params;
         
@@ -72,9 +71,9 @@ module.exports = {
             }
             const deleted = await Report.findByIdAndDelete(id);
             // Redirect to /reports with status message
-            return res.redirect('/')
+            return res.redirect('/reports')
         } catch (error) {
-            return res.send(new Response(ResponseStrings.ERROR, error.message))
+            return next(error)
         }
     }
 }
