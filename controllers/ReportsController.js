@@ -1,7 +1,4 @@
-const { Mongoose, mongo } = require('mongoose');
-const ResponseStrings = require('../constants/ResponseStrings');
 const Report = require('../models/Report');
-const Response = require('../models/Response');
 
 module.exports = {
     findAll: async (req, res) => {
@@ -20,7 +17,7 @@ module.exports = {
 
         try {
             const report = await Report.findById(id);
-            if(!report) return res.redirect(404, '/')
+            if(!report) return res.redirect('/')
             return res.render('report/single', {report: report, PageTitle: `ID: ${report.id}`})
         } catch (error) {
             return next(error)
@@ -67,7 +64,11 @@ module.exports = {
         try {
             const report = await Report.findById(id)
             if(!report) {
-                return res.render('report/error', {error: `No report found with id: ${id}`});
+                /**
+                 * @todo Fix this. Not good idea.
+                 */
+                const error = {message: `No report found with id ${id}`}
+                next(error)
             }
             const deleted = await Report.findByIdAndDelete(id);
             // Redirect to /reports with status message
