@@ -1,8 +1,21 @@
 const Report = require('../models/Report');
 
 module.exports = {
-    findAll: async (req, res) => {
 
+    renderCreate: (req, res) => {
+        return res.render('report/new', {PageTitle: "Create new report"});
+      },
+
+    renderUpdate: async (req, res) => {
+        try {
+          const report = await Report.findById(req.params.id)
+          return res.render('report/update', {PageTitle: "Update report", report});
+        } catch (error) {
+          return next(error)
+        }
+      },
+
+    findAll: async (req, res) => {
         try {
             const reports = await Report.find();
         return res.render('report/all-reports', { reports })
@@ -24,13 +37,16 @@ module.exports = {
         }
     },
 
-    create: async (req, res) => {
+    create: async (req, res, next) => {
 
         try {
-            // Create the report and associate it with the current User
-            // To beging with, just create the report so the application can render it in the reports page
-            const created = await Report.create({title: req.body.title, body: req.body.body})
+            /**
+             * @todo Validate prescence of requests body
+             */
 
+            // Create the report and associate it with the current User
+            const created = await Report.create({title: req.body.title, body: req.body.body, author: req.oidc.user.nickname})
+            // console.log(req.originalUrl)
             return res.redirect('/reports')
         } catch (error) {
             return next(error)

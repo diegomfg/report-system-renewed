@@ -4,11 +4,8 @@
     <p>{{ message }}</p>
 {{/if}}
 
-{{#if deletedReport }}
-    <p>Deleted: {{deletedReport.title}}</p>
-{{/if}}
-
 <a href="/reports/create">New Report</a>
+<a href="/dashboard">Dasboard</a>
 <ul class="reports_list">
     {{#each reports}}
     <div class="card">

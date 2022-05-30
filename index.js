@@ -22,11 +22,10 @@ connection();
 const pagesRoutes  = require('./routes/pages.routes')
 const reportRoutes = require('./routes/report.routes')
 const port = process.env.PORT || 8080;
-
 /**
  * @summary The Auth0 authentication middleware
  */
-const { auth } = require('express-openid-connect');
+const { auth, requiresAuth } = require('express-openid-connect');
 
 const config = {
   authRequired: false,
@@ -36,15 +35,11 @@ const config = {
   clientID: process.env.clientID,
   issuerBaseURL: process.env.issuerBaseURL
 };
-
 /**
  * Setup main Express application.
  * @param {Express.Application} app
  */
 const app = express();
-
-
-
 /**
  * @summary Serve static content
  * Set up views
@@ -54,9 +49,10 @@ app.set('view engine', 'hbs')
 app.set('views','public/views/')
 app.use(express.static(__dirname + '/public/'))
 hbs.registerPartials(__dirname + '/public/views/partials/')
-
-
-
+hbs.registerHelper('if', function(condition, options){
+  if(condition)
+    return options.fn(this)
+})
 /**
  * Setup logger
  */
@@ -73,21 +69,16 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors())
 app.use(middleware.general)
 
-
-
-/**
- * @summary
- * Routes. All defined in their external files.
- * @todo Add middleware to protect routes
- * @todo Use authorization token middleware
- */
 app.use('/', pagesRoutes)
-app.use('/reports', reportRoutes)
+app.use('/reports', requiresAuth(), reportRoutes)
 
-/**
- * @todo Set up Error handler
- */
 app.use((err, req, res, next) => {
+  /**
+   * @todo Check if user is authenticated.
+   *       If Authenticated, go back with error message.
+   *       If not Authenticated, render index with base error.
+   *       Actually, what I'm thinking is using req.originalUrl to redirect to the previous page with the error message.
+   */
     res.render('index', {error: err})
 })
 

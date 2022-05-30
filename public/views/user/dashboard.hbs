@@ -1,16 +1,18 @@
-{{> header }} 
-    <h1>Dashboard</h1>
-    <a href="/logout">Logout</a>
+{{> header }}
+<h1>Dashboard</h1>
+<div>
+    {{#if user}}
     <div>
-        {{#if user}}
-            <p>This works... {{user.nickname}}</p>
-            <code>Welcome {{user.email}}!!</code>
-        {{/if}}
-
-        {{#if error}}
-            <code>Some kind of error</code>
-        {{/if}}
-
-        
+        <p>This works... {{user.nickname}}</p>
+        <code>Welcome {{user.email}}!</code>
     </div>
+
+    <a href="/reports">Reports</a>
+    <a href="/logout">Logout</a>
+    {{/if}}
+
+    {{#if error}}
+    <code>{{error}}</code>
+    {{/if}}
+</div>
 {{> footer}}
