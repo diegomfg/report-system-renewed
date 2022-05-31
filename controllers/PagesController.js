@@ -8,8 +8,7 @@ module.exports = {
     },
 
     renderDashboard: (req, res)=>{
-        return res.render('user/dashboard',
-        {
+        return res.render('user/dashboard', {
             user: req.oidc.user 
         })
     },

@@ -41,12 +41,10 @@ module.exports = {
 
         try {
             /**
-             * @todo Validate prescence of requests body
+             * @todo Validate prescence of request' body
              */
 
-            // Create the report and associate it with the current User
             const created = await Report.create({title: req.body.title, body: req.body.body, author: req.oidc.user.nickname})
-            // console.log(req.originalUrl)
             return res.redirect('/reports')
         } catch (error) {
             return next(error)
@@ -87,7 +85,9 @@ module.exports = {
                 next(error)
             }
             const deleted = await Report.findByIdAndDelete(id);
-            // Redirect to /reports with status message
+            /**
+             * @todo redirect with status message or next(error with custom originalUrl for each case?)
+             */
             return res.redirect('/reports')
         } catch (error) {
             return next(error)
