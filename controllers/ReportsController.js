@@ -58,7 +58,6 @@ module.exports = {
     update: async (req, res, next) => {
 
          const { id } = req.params;
-         console.log(req.body)
          
          try {
              const updated = await Report.findByIdAndUpdate(id, {$set: req.body})
@@ -78,17 +77,11 @@ module.exports = {
         try {
             const report = await Report.findById(id)
             if(!report) {
-                /**
-                 * @todo Fix this. Not good idea.
-                 */
                 const error = {message: `No report found with id ${id}`}
                 next(error)
             }
             const deleted = await Report.findByIdAndDelete(id);
-            /**
-             * @todo redirect with status message or next(error with custom originalUrl for each case?)
-             */
-            return res.redirect('/reports')
+            return res.status(200).redirect('/reports')
         } catch (error) {
             return next(error)
         }

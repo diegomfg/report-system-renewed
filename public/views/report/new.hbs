@@ -1,12 +1,12 @@
 {{>header}}
-<div class="container">
+<div class="container mx-auto px-4 lg:mx-auto" style="border: 1px solid black;">
   <h1>Create new report</h1>
-  <form action="/reports" method="POST">
-    <label for="title">Title</label>
-    <input type="text" name="title" id="title" placeholder="...title goes here">
-    <label for="body">Body</label>
-    <textarea name="body" id="body" cols="30" rows="10" placeholder="...report body goes here"></textarea>
-    <button type="submit">Submit</button>
+  <form action="/reports/create" method="post">
+    <label for="title">Report Title</label>
+    <input type="text" name="title" id="title" placeholder="Title goes here">
+    <label for="body">Report Body</label>
+    <input type="text" name="body" id="body" placeholder="Type the body of the report here">
+    <input type="submit" value="submit" placeholder="Submit">
   </form>
 </div>
 {{>footer}}

@@ -5,7 +5,7 @@ const Report = require('../models/Report');
 
 reportRoutes.get('/',             reportsController.findAll);
 reportRoutes.get('/create',       reportsController.renderCreate)
-reportRoutes.post('/',            reportsController.create)
+reportRoutes.post('/create',      reportsController.create)
 reportRoutes.get('/update/:id',   reportsController.renderUpdate)
 reportRoutes.post('/update/:id',  reportsController.update)
 reportRoutes.get('/delete/:id',   reportsController.delete)
