@@ -18,7 +18,7 @@ module.exports = {
     findAll: async (req, res) => {
         try {
             const reports = await Report.find();
-        return res.render('report/all-reports', { reports })
+        return res.render('report/all-reports', { reports, PageTitle: "All Reports" })
         } catch (error) {
             return res.render('report/error', {error: error.message})
         }
@@ -54,6 +54,7 @@ module.exports = {
     /**
      * 
      * @todo Validate request body
+     * @todo Add middleware for securing resources that do not belong to other user.
      */
     update: async (req, res, next) => {
 

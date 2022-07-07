@@ -5,11 +5,18 @@
   <h2>Welcome to</h2>
   <h1>Report System</h1>
   <hr>
-  <a href="/login">Login or Sign Up</a>
   {{#if isAuthenticated }}
     <a href="/dashboard">Dashboard</a>
     <a href="/profile/{{user.nickname}}">Profile</a>
     <a href="/reports/">Reports</a>
     <a href="/logout">Logout</a>
+  {{else}}
+    <a href="/login">Login or Sign Up</a>
+  {{/if}}
+
+  {{#if isAuthenticated}}
+  <h1>IS AUTHENTICATED</h1>
+  {{else}}
+  <h1>Unknown Author</h1>
   {{/if}}
 {{>footer}}

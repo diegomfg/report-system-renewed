@@ -48,10 +48,15 @@ const app = express();
 app.set('view engine', 'hbs')
 app.set('views','public/views/')
 app.use(express.static(__dirname + '/public/'))
+/**
+ * @summary Set up Handlebars
+ * Added the isLanding helper function 
+ * to ensure that the navbar is rendered everywhere else 
+ * but the landing page
+ */
 hbs.registerPartials(__dirname + '/public/views/partials/')
-hbs.registerHelper('if', function(condition, options){
-  if(condition)
-    return options.fn(this)
+hbs.registerHelper('isLanding', function(page){
+  return page!=="Landing"
 })
 /**
  * Setup logger
@@ -79,7 +84,7 @@ app.use((err, req, res, next) => {
    *       If not Authenticated, render index with base error.
    *       Actually, what I'm thinking is using req.originalUrl to redirect to the previous page with the error message.
    */
-    res.render('index', {error: err})
+    res.render('index', {error: err, PageTitle: 'Landing'})
 })
 
 app.listen(port, () => {

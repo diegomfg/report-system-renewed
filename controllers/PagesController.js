@@ -1,8 +1,8 @@
 module.exports = {
 
-    renderIndexPage: (req, res) => {
+    renderLandingPage: (req, res) => {
         return res.render('index', {
-            PageTitle: 'Index',
+            PageTitle: 'Landing',
             isAuthenticated: req.oidc.isAuthenticated()
         })
     },
