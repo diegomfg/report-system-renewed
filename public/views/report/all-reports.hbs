@@ -1,20 +1,26 @@
 {{>header}}
-{{#if message }}
-<p>{{ message }}</p>
-{{/if}}
-
-<a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="/reports/create">New
-    Report</a>
-<a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-    href="/dashboard">Dashboard</a>
-<ul class="reports_list">
-    {{#each reports}}
-    <div class="card">
-        <h1><b>Title: </b>{{this.title}}</h1>
-        <p><b>Body:</b> {{this.body}}</p>
-        <span><a href="/reports/{{this.id}}">View</a></span>
+{{#each reports}}
+{{!-- BEGING REPORT CARD --}}
+<div class="min-w-sm w-lg lg:max-w-md lg:flex mt-4 mx-auto">
+    <div
+        class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+        <div class="mb-8">
+            <div class="text-gray-900 font-bold text-xl mb-2">{{this.title}}</div>
+            <p class="text-gray-700 text-base">{{this.body}}</p>
+        </div>
+        <div class="flex items-center">
+            {{!-- <img class="w-10 h-10 rounded-full mr-4" src="/img/jonathan.jpg" alt="Avatar of Jonathan Reinink">
+            --}}
+            <div class="text-sm">
+                <p class="text-gray-900 leading-none">By: {{this.author}}</p>
+                <p class="text-gray-600">{{this.updated_at}}</p>
+                <a href="/reports/{{this.id}}"
+                    class="inline-block align-baseline font-bold text-md text-gray-500 hover:text-blue-800">View</a>
+            </div>
+        </div>
     </div>
-    <hr>
-    {{/each}}
+    {{!-- END REPORT CARD --}}
+</div>
+{{/each}}
 </ul>
 {{>footer}}

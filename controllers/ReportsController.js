@@ -76,7 +76,6 @@ module.exports = {
         try
         {
             const updated = await Report.findByIdAndUpdate(id, { $set: req.body })
-            process.nextTick(() => console.log(updated))
             if (updated.modifiedCount == 0)
             {
                 let error = { message: 'Something happened and no reports were updated' }

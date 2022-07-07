@@ -1,7 +1,7 @@
-const express    = require('express')
-const morgan     = require('morgan')
-const hbs        = require('hbs')
-const cors       = require('cors')
+const express = require('express')
+const morgan = require('morgan')
+const hbs = require('hbs')
+const cors = require('cors')
 const bodyParser = require('body-parser')
 const middleware = require('./middleware/middleware')
 /**
@@ -19,7 +19,7 @@ connection();
  * @summary Import the routes for the two main entities.
  * Each entity has its own API.
  */
-const pagesRoutes  = require('./routes/pages.routes')
+const pagesRoutes = require('./routes/pages.routes')
 const reportRoutes = require('./routes/report.routes')
 const port = process.env.PORT || 8080;
 /**
@@ -46,7 +46,7 @@ const app = express();
  * Register Handlebars partials
  */
 app.set('view engine', 'hbs')
-app.set('views','public/views/')
+app.set('views', 'public/views/')
 app.use(express.static(__dirname + '/public/'))
 /**
  * @summary Set up Handlebars
@@ -55,8 +55,14 @@ app.use(express.static(__dirname + '/public/'))
  * but the landing page
  */
 hbs.registerPartials(__dirname + '/public/views/partials/')
-hbs.registerHelper('isLanding', function(page){
-  return page!=="Landing"
+hbs.registerHelper("isLanding", function (page)
+{
+  return page !== "Landing"
+})
+hbs.registerHelper("isDefaultValue", function (candidate, value)
+{
+  process.nextTick(() => console.log(`Candidate: ${candidate}\nValue: ${value}`))
+  return candidate == value;
 })
 /**
  * Setup logger
@@ -70,23 +76,25 @@ app.use(morgan('dev'))
  */
 app.use(auth(config));
 app.use(express.json())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 app.use(middleware.general)
 
 app.use('/', pagesRoutes)
 app.use('/reports', requiresAuth(), reportRoutes)
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) =>
+{
   /**
    * @todo Check if user is authenticated.
    *       If Authenticated, go back with error message.
    *       If not Authenticated, render index with base error.
    *       Actually, what I'm thinking is using req.originalUrl to redirect to the previous page with the error message.
    */
-    res.render('index', {error: err, PageTitle: 'Landing'})
+  res.render('index', { error: err, PageTitle: 'Landing' })
 })
 
-app.listen(port, () => {
-    console.log(`Service running at port: ${port}`)
+app.listen(port, () =>
+{
+  console.log(`Service running at port: ${port}`)
 })
