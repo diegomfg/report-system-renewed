@@ -1,27 +1,53 @@
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
-      integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <link rel="stylesheet" href="/css/styles.css" />
-    <title>{{ PageTitle }}</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+    integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/index.css">
+  <title>{{ PageTitle }}</title>
+</head>
 
-  <body>
-    {{!-- Add navbar or head title --}}
-    {{#if (isLanding PageTitle)}}
-      <nav>Navbar here</nav>
-    {{/if}}
-    {{!-- @todo Add error header? --}}
+<body>
+  {{!-- Add navbar or head title --}}
+  {{#if (isLanding PageTitle)}}
+  <nav class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
+    <div class="flex items-center flex-shrink-0 text-white mr-6">
+      <span class="font-semibold text-xl tracking-tight"><a href="/">Report System</a></span>
+    </div>
+    <div class="block lg:hidden">
+      <button
+        class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <title>Menu</title>
+          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+        </svg>
+      </button>
+    </div>
+    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+      <div class="text-sm lg:flex-grow">
+        <a href="/dashboard" class="block mt-4 lg:inline-block lg:mt-0 text-gray-100 hover:text-white mr-4">
+          Dashboard
+        </a>
+        <a href="/reports" class="block mt-4 lg:inline-block lg:mt-0 text-gray-100 hover:text-white mr-4">
+          Reports
+        </a>
+        <a href="/profile/{{user.nickname}}" class="block mt-4 lg:inline-block lg:mt-0 text-gray-100 hover:text-white">
+          Profile
+        </a>
+      </div>
+      <div>
+        <a href="/reports/create"
+          class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">New
+          Report</a>
+      </div>
+    </div>
+  </nav>
+  {{/if}}
+  {{!-- @todo Add error header? --}}

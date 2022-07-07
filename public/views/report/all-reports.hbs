@@ -1,11 +1,12 @@
 {{>header}}
-<h1>You're looking at: All Reports Page</h1>
 {{#if message }}
-    <p>{{ message }}</p>
+<p>{{ message }}</p>
 {{/if}}
 
-<a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="/reports/create">New Report</a>
-<a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="/dashboard">Dashboard</a>
+<a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="/reports/create">New
+    Report</a>
+<a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+    href="/dashboard">Dashboard</a>
 <ul class="reports_list">
     {{#each reports}}
     <div class="card">
