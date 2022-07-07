@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const timeStamp = require("mongoose-timestamps");
+const REPORT_CATEGORIES = require('../constants/ReportCategories')
+
+
 const reportSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -11,12 +14,17 @@ const reportSchema = new mongoose.Schema({
         required: [true, 'Report must have a text body']
     },
     author: {
-            type: String,
-            required: true
+        type: String,
+        required: true
     },
     completed: {
         type: Boolean,
         default: false
+    },
+    category: {
+        type: String,
+        enum: REPORT_CATEGORIES,
+        default: 'general'
     }
 })
 

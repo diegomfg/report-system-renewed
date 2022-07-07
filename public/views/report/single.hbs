@@ -1,12 +1,14 @@
 {{>header}}
-    <h1>You're looking at: <span><code>Single Report Page</code></span></h1>
-    {{!-- Haven't tested this below --}}
-    <h2>Report Title:</h2>
-    <span>{{report.title}}</span>
-    <h3>Report Body:</h3>
-    <p>{{report.body}}</p>
-    <h3>Published By: {{report.author}}</h3>
-
-    <a href="/reports/delete/{{report.id}}">Delete</a>
-    <a href="/reports/update/{{report.id}}">Update</a>
+<h1>You're looking at: <span><code>Single Report Page</code></span></h1>
+{{!-- Haven't tested this below --}}
+<h2>Report Title:</h2>
+<span>{{report.title}}</span>
+<h3>Report Body:</h3>
+<p>{{report.body}}</p>
+<h3>Published By: {{report.author}}</h3>
+<p><b>Created at: {{report.created_at}}</b></p>
+<p><b>Updated at: {{report.updated_at}}</b></p>
+<p><b>Category: {{report.category}}</b></p>
+<a href="/reports/delete/{{report.id}}">Delete</a>
+<a href="/reports/update/{{report.id}}">Update</a>
 {{>footer}}

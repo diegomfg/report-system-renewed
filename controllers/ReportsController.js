@@ -1,10 +1,10 @@
 const Report = require('../models/Report');
-
+const REPORT_CATEGORIES = require('../constants/ReportCategories')
 module.exports = {
 
     renderCreate: (req, res) =>
     {
-        return res.render('report/new', { PageTitle: "Create new report" });
+        return res.render('report/new', { PageTitle: "Create new report", categories: REPORT_CATEGORIES });
     },
 
     renderUpdate: async (req, res) =>
@@ -12,7 +12,7 @@ module.exports = {
         try
         {
             const report = await Report.findById(req.params.id)
-            return res.render('report/update', { PageTitle: "Update report", report });
+            return res.render('report/update', { PageTitle: "Update report", report, categories: REPORT_CATEGORIES });
         } catch (error)
         {
             return next(error)
@@ -55,8 +55,7 @@ module.exports = {
             /**
              * @todo Validate prescence of request' body
              */
-
-            const created = await Report.create({ title: req.body.title, body: req.body.body, author: req.oidc.user.nickname })
+            const created = await Report.create({ title: req.body.title, body: req.body.body, author: req.oidc.user.nickname, category: req.body.category })
             return res.redirect('/reports')
         } catch (error)
         {
@@ -77,7 +76,8 @@ module.exports = {
         try
         {
             const updated = await Report.findByIdAndUpdate(id, { $set: req.body })
-            if (updated.modifiedCount != 0)
+            process.nextTick(() => console.log(updated))
+            if (updated.modifiedCount == 0)
             {
                 let error = { message: 'Something happened and no reports were updated' }
                 return next(error)
