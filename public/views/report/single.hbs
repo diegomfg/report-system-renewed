@@ -1,14 +1,20 @@
 {{>header}}
-<h1>You're looking at: <span><code>Single Report Page</code></span></h1>
-{{!-- Haven't tested this below --}}
-<h2>Report Title:</h2>
-<span>{{report.title}}</span>
-<h3>Report Body:</h3>
-<p>{{report.body}}</p>
-<h3>Published By: {{report.author}}</h3>
-<p><b>Created at: {{report.created_at}}</b></p>
-<p><b>Updated at: {{report.updated_at}}</b></p>
-<p><b>Category: {{report.category}}</b></p>
-<a href="/reports/delete/{{report.id}}">Delete</a>
-<a href="/reports/update/{{report.id}}">Update</a>
+<div
+    class="border-r border-b border-l border-gray-400 lg:border-l lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+    <div class="w-full max-w-lg min-w-xs mx-auto px-4">
+        {{!-- Haven't tested this below --}}
+        <h2 class="block text-base xs:text-xl sm:text-xl md:text-xl lg:text-xl xl:text-xl">Report Title</h2>
+        <h3 class="text-base xs:text-2xl sm:text-2xl md:text-2xl lg:text-2xl xl:text-3xl">{{report.title}}</h3>
+        <h3 class="block mt-4 text-base xs:text-3xl sm:text-xl md:text-xl lg:text-xl xl:text-xl">Description</h3>
+        <article class="prose lg:prose-xl">
+            {{ report.body }}
+        </article>
+        <h3>Published By: {{report.author}}</h3>
+        <p><b>Created at: {{report.created_at}}</b></p>
+        <p><b>Updated at: {{report.updated_at}}</b></p>
+        <p><b>Category: {{report.category}}</b></p>
+        <a href="/reports/delete/{{report.id}}">Delete</a>
+        <a href="/reports/update/{{report.id}}">Update</a>
+    </div>
+</div>
 {{>footer}}

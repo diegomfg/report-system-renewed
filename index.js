@@ -40,6 +40,17 @@ const config = {
  * @param {Express.Application} app
  */
 const app = express();
+
+
+
+
+
+
+
+
+
+
+
 /**
  * @summary Serve static content
  * Set up views
@@ -59,16 +70,32 @@ hbs.registerHelper("isLanding", function (page)
 {
   return page !== "Landing"
 })
+/**
+ * @summary Helper function to summary down a report's description down to 150 characters
+ */
+hbs.registerHelper("summary", function (text)
+{
+  return text.slice(0, 150) + '...'
+})
 hbs.registerHelper("isDefaultValue", function (candidate, value)
 {
-  process.nextTick(() => console.log(`Candidate: ${candidate}\nValue: ${value}`))
   return candidate == value;
 })
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Setup logger
  */
 app.use(morgan('dev'))
-
 /**
  * @summary Middleware set up
  * @todo Remove json middleware for form-data parsing?
@@ -79,6 +106,16 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 app.use(middleware.general)
+
+
+
+
+
+
+
+
+
+
 
 app.use('/', pagesRoutes)
 app.use('/reports', requiresAuth(), reportRoutes)

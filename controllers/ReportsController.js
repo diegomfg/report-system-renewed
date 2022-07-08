@@ -40,7 +40,7 @@ module.exports = {
         {
             const report = await Report.findById(id);
             if (!report) return res.redirect('/')
-            return res.render('report/single', { report: report, PageTitle: `ID: ${report.id}` })
+            return res.render('report/single', { report: report, PageTitle: `View Report` })
         } catch (error)
         {
             return next(error)
