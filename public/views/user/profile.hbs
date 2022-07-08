@@ -2,7 +2,10 @@
 <h1>User profile for {{user.email}}</h1>
 <a href="/dashboard">Dashboard</a>
 <a href="/reports">Reports</a>
-{{#each users}}
-<li>{{this.name}}</li>
-{{/each}}
+{{#if }}
+{{isSingleProfile}}
+{{!-- Render Single profile --}}
+{{else}}
+{{!-- Render all profiles --}}
+{{/if}}
 {{> footer }}
