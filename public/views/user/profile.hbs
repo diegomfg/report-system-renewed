@@ -1,5 +1,8 @@
 {{> header }}
-    <h1>User profile for {{user.email}}</h1>
-    <a href="/dashboard">Dashboard</a>
-    <a href="/reports">Reports</a>
+<h1>User profile for {{user.email}}</h1>
+<a href="/dashboard">Dashboard</a>
+<a href="/reports">Reports</a>
+{{#each users}}
+<li>{{this.name}}</li>
+{{/each}}
 {{> footer }}
