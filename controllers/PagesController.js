@@ -21,6 +21,12 @@ module.exports = {
     {
         try
         {
+            /**
+             * @todo Need to find a way to make this call one every N minutes,
+             * because we're going to be spamming Auth0 for tokens in each request
+             * 
+             * Maybe set token as cookies via middleware
+             */
             // Get token response from the auth api
             const token = await axios.post(process.env.tokenUrl,
                 {

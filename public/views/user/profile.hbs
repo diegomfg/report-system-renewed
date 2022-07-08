@@ -2,10 +2,24 @@
 <h1>User profile for {{user.email}}</h1>
 <a href="/dashboard">Dashboard</a>
 <a href="/reports">Reports</a>
-{{#if }}
-{{isSingleProfile}}
-{{!-- Render Single profile --}}
-{{else}}
+{{#if (hasManyProfile profile)}}
 {{!-- Render all profiles --}}
+<h1>See my profile(s)</h1>
+{{#each profile}}
+<p>Name: {{this.name}}</p>
+<p>Nickname: {{this.nickname}}</p>
+<p>user_id: {{this.user_id}}</p>
+<p>Last Login: {{this.last_login}}</p>
+<p>Login count: {{this.logins_count}}</p>
+<hr>
+{{/each}}
+{{else}}
+{{!-- Render Single profile --}}
+<h1>About to render a single profile</h1>
+<p>Name: {{profile.name}}</p>
+<p>Nickname: {{profile.nickname}}</p>
+<p>user_id: {{profile.user_id}}</p>
+<p>Last Login: {{profile.last_login}}</p>
+<p>Login count: {{profile.logins_count}}</p>
 {{/if}}
 {{> footer }}

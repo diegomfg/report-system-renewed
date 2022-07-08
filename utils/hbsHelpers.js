@@ -1,4 +1,5 @@
-module.exports = (hbs) => {
+module.exports = (hbs) =>
+{
 
   /**
  * @summary Set up Handlebars
@@ -8,28 +9,34 @@ module.exports = (hbs) => {
  */
 
 
-hbs.registerHelper("isLanding", function (page)
-{
-  return page !== "Landing"
-})
+  hbs.registerHelper("isLanding", function (page)
+  {
+    return page !== "Landing"
+  })
 
 
-/**
- * @summary Helper function to summary down a report's description down to 150 characters
- */
-hbs.registerHelper("summary", function (text)
-{
-  return text.slice(0, 150) + '...'
-})
+  /**
+   * @summary Helper function to summary down a report's description down to 150 characters
+   */
+  hbs.registerHelper("summary", function (text)
+  {
+    return text.slice(0, 150) + '...'
+  })
 
 
-hbs.registerHelper("isDefaultValue", function (candidate, value)
-{
-  return candidate == value;
-})
+  hbs.registerHelper("isDefaultValue", function (candidate, value)
+  {
+    return candidate == value;
+  })
 
 
-hbs.registerHelper("formatDate", function(date){
-  return new Date(date).toUTCString()
-})
+  hbs.registerHelper("formatDate", function (date)
+  {
+    return new Date(date).toUTCString()
+  })
+
+  hbs.registerHelper("hasManyProfile", function (profile)
+  {
+    return Array.isArray(profile)
+  })
 }
