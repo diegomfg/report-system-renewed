@@ -41,15 +41,12 @@ module.exports = {
             const options = { headers: { 'Authorization': `${token_type} ${access_token}` } }
             const url = process.env.audience + 'users';
 
-            // Get user profile from Auth0 API
-            const userProfile = await axios
+            // Get user profile from Auth0 API - Add /{id} to the url to call for one specific user.
+            // url = `${url}{req.oidc.user.id}`
+            const response = await axios
                 .get(url, options)
-            const users = userProfile.data;
-            console.log('Users:', users)
-            // Call Auth0 Management API to get the access token.
-            // Call Auth0 API and send the access token and retrieve user profile
-            // Review the received data to decide what will be sent to the view.
-            // Sending the user JSON data
+            const users = response.data;
+
             res.render('user/profile', { PageTitle: "My Profile", users })
         } catch (error)
         {
