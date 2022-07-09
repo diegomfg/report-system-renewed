@@ -2,7 +2,7 @@
 {{#each reports}}
 <div class="w-lg min-w-sm w-lg lg:max-w-md lg:flex mt-6 mx-auto">
     <div
-        class="border-r border-b border-l border-gray-400 lg:border-l lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+        class="border-r border-b border-l border-gray-400 lg:border-l lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal bg-gray-200">
         {{!-- @todo Move the borders one component above --}}
         <div class="mb-8">
             <div class="text-gray-900 font-bold text-xl mb-2">{{this.title}}</div>
@@ -15,7 +15,7 @@
                 <p class="text-gray-900 leading-none">By: {{this.author}}</p>
                 <p class="text-gray-600">{{this.updated_at}}</p>
                 <a href="/reports/{{this.id}}"
-                    class="inline-block align-baseline font-bold text-lg border-l border-r border-t border-b text-gray-500 hover:text-blue-800">View</a>
+                    class="inline-block align-baseline font-bold text-lg border-l border-r border-t border-b rounded text-gray-500 hover:text-blue-800">View</a>
             </div>
         </div>
     </div>

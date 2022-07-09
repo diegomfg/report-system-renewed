@@ -5,7 +5,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const middleware = require('./middleware/middleware')
 const hbsSetup = require('./utils/hbsHelpers')
-
+const cookieParser = require('cookie-parser')
 /**
  * @summary Configure environment variables
  * Loads a local .env file with configuration variables such as PORT, local_db_uri, prod_db_uri
@@ -78,8 +78,10 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({
   extended: true
 }))
+app.use(cookieParser())
 app.use(cors())
 app.use(middleware.general)
+app.use(middleware.tokenValidator)
 
 /**
  * @summary Resource routes
