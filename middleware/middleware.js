@@ -46,6 +46,8 @@ module.exports = {
   general: (req, res, next) =>
   {
     res.locals.user = req.oidc.user;
+    // Probably solved using Auth0 Actions
+
     // Get roles from Auth0 API
     // If user does not have roles
     // Assign user as default role
