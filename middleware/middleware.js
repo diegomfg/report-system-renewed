@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+
 module.exports = {
   routeValidator: (req, res, next) =>
   {
@@ -45,6 +46,10 @@ module.exports = {
   general: (req, res, next) =>
   {
     res.locals.user = req.oidc.user;
+    // Get roles from Auth0 API
+    // If user does not have roles
+    // Assign user as default role
+    // How/When to add admin as role?
     next()
   }
 }

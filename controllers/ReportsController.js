@@ -81,7 +81,10 @@ module.exports = {
     {
 
         const { id } = req.params;
-
+        // Get user role
+        // Validate user role
+        // if role IS NOT admin redirect to baseUrl
+        // else, proceed
         try
         {
             const updated = await Report.findByIdAndUpdate(id, { $set: req.body })
