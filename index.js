@@ -6,22 +6,21 @@ const bodyParser = require('body-parser')
 const middleware = require('./middleware/middleware')
 const hbsSetup = require('./utils/hbsHelpers')
 
-
-
-
-
-
 /**
  * @summary Configure environment variables
  * Loads a local .env file with configuration variables such as PORT, local_db_uri, prod_db_uri
  */
 const dotenv = require('dotenv')
 dotenv.config()
+
+
 /**
  * @summary Requires Mongodb and starts the connection
  */
 const connection = require('./database/connection')
 connection();
+
+
 /**
  * @summary Import the routes for the two main entities.
  * Each entity has its own API.
@@ -29,6 +28,8 @@ connection();
 const pagesRoutes = require('./routes/pages.routes')
 const reportRoutes = require('./routes/report.routes')
 const port = process.env.PORT || 8080;
+
+
 /**
  * @summary The Auth0 authentication middleware
  */
@@ -50,6 +51,7 @@ const config = {
  * @param {Express.Application} app
  */
 const app = express();
+
 
 /**
  * @summary Serve static content
@@ -79,20 +81,14 @@ app.use(bodyParser.urlencoded({
 app.use(cors())
 app.use(middleware.general)
 
-
-
-
-
-
-
-
-
-
-
+/**
+ * @summary Resource routes
+ */
 app.use('/', pagesRoutes)
 app.use('/reports', requiresAuth(), reportRoutes)
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) =>
+{
   /**
    * @todo Check if user is authenticated.
    *       If Authenticated, go back with error message.
@@ -105,6 +101,7 @@ app.use((err, req, res, next) => {
   })
 })
 
-app.listen(port, () => {
+app.listen(port, () =>
+{
   console.log(`Service running at port: ${port}`)
 })

@@ -23,7 +23,10 @@ module.exports = {
     {
         try
         {
-            const reports = await Report.find();
+            /**
+             * @todo Research pagination?
+             */
+            const reports = await (await Report.find()).reverse();
             return res.render('report/all-reports', { reports, PageTitle: "All Reports" })
         } catch (error)
         {
@@ -55,7 +58,13 @@ module.exports = {
             /**
              * @todo Validate prescence of request' body
              */
-            const created = await Report.create({ title: req.body.title, body: req.body.body, author: req.oidc.user.nickname, category: req.body.category })
+            const created = await Report
+                .create({
+                    title: req.body.title,
+                    body: req.body.body,
+                    author: req.oidc.user.nickname,
+                    category: req.body.category
+                })
             return res.redirect('/reports')
         } catch (error)
         {
