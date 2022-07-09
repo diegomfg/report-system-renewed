@@ -80,8 +80,9 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(cookieParser())
 app.use(cors())
-app.use(middleware.general)
 app.use(middleware.tokenValidator)
+app.use(middleware.general)
+
 
 /**
  * @summary Resource routes
