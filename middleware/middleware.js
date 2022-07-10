@@ -12,7 +12,7 @@ module.exports = {
   {
     if (req.cookies['api_token'])
     {
-      // Validate token
+      console.log('Access token found')
       return next();
     } else
     {
@@ -22,6 +22,7 @@ module.exports = {
           * 
           * Maybe set token as cookies via middleware
           */
+      console.log('Request access token')
       // Get token response from the auth api
       const token = await axios.post(process.env.tokenUrl,
         {
