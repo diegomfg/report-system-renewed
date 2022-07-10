@@ -4,7 +4,6 @@ module.exports = {
 
     renderLandingPage: (req, res) =>
     {
-        console.log(`Test cookie: ${req.cookies.test}`);
 
         return res.render('index', {
             PageTitle: 'Landing',
@@ -12,14 +11,14 @@ module.exports = {
         })
     },
 
-    renderDashboard: async (req, res) =>
+    renderDashboard: async (req, res, next) =>
     {
         try
         {
             // Configure URL for requesting current User.
             const url = process.env.audience + `users-by-email?email=${req.oidc.user.email}`;
             // Set headers for calling the API
-            const options = { headers: { 'Authorization': `Bearer ${req.cookies['api_token']}` } }
+            const options = { headers: { 'Authorization': `Bearer ${req.session.api_token}` } }
 
             // Call user API and ask for current user
             // const currentUser = await axios.get(url, options);
@@ -37,6 +36,7 @@ module.exports = {
             })
         } catch (error)
         {
+            console.log('dashboard error')
             return next(error)
         }
     },
@@ -48,7 +48,7 @@ module.exports = {
             // Configure URL for requesting current User.
             const url = process.env.audience + `users-by-email?email=${req.oidc.user.email}`;
             // Set headers for calling the API
-            const options = { headers: { 'Authorization': `Bearer ${req.cookies['api_token']}` } }
+            const options = { headers: { 'Authorization': `Bearer ${req.session.api_token}` } }
 
             const response = await axios
                 .get(url, options)

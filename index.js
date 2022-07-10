@@ -5,7 +5,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const middleware = require('./middleware/middleware')
 const hbsSetup = require('./utils/hbsHelpers')
-const cookieParser = require('cookie-parser')
+const session  = require('express-session')
+const MongoStore = require('connect-mongo')
 /**
  * @summary Configure environment variables
  * Loads a local .env file with configuration variables such as PORT, local_db_uri, prod_db_uri
@@ -74,7 +75,20 @@ app.use(morgan('dev'))
  * auth router attaches /login, /logout, and /callback routes to the baseURL
  */
 app.use(auth(config))
-app.use(cookieParser())
+app.use(session({
+  secret: '20192-3920-129',
+  cookie: {
+    secure: true
+  },
+  resave: true,
+  saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: 'mongodb+srv://diegomfg:diego1210@diegocluster.6nhoq.mongodb.net/report-system?authSource=admin&replicaSet=diegocluster-shard-0&w=majority&readPreference=primary&retryWrites=true&ssl=true',
+    dbName: "report-system",
+    collectionName: "sessions",
+    autoRemove: "native"
+  })
+}))
 app.use(express.json())
 app.use(bodyParser.urlencoded({
   extended: true
