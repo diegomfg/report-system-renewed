@@ -1,5 +1,5 @@
 const express = require('express');
-const axios = require('axios');
+const axios = require('axios').default;
 
 module.exports = {
   routeValidator: (req, res, next) =>
@@ -44,15 +44,21 @@ module.exports = {
 
   },
 
-  general: (req, res, next) =>
+  general:  async(req, res, next) =>
   {
     res.locals.user = req.oidc.user;
-    // Probably solved using Auth0 Actions
-
-    // Get roles from Auth0 API
-    // If user does not have roles
-    // Assign user as default role
-    // How/When to add admin as role?
+    try {
+      // Set headers for calling the API
+      const options = { headers: { 'Authorization': `Bearer ${req.cookies['api_token']}` } }
+      const url = process.env.audience + `users-by-email?email=${req.oidc.user.email}`;
+      // Get users from Auth0 API
+      // url = `${url}{req.oidc.user.id}`
+      const users = await axios
+          .get(url, options)
+      
+    } catch (error) {
+      return next(error)
+    }
     next()
   }
 }

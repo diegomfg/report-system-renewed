@@ -21,15 +21,6 @@ module.exports = (hbs) =>
   })
 
   /**
-   * @summary Checks if the model category is equal to the <select> element value to set default <option> as selected
-   * @todo Remove, not doing this anymore
-   */
-  hbs.registerHelper("isDefaultValue", function (candidate, value)
-  {
-    return candidate == value;
-  })
-
-  /**
    * @summary Returns the Mongodb timestamp as a UTC date to be rendered in the view
    */
   hbs.registerHelper("formatDate", function (date)
