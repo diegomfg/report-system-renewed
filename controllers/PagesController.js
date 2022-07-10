@@ -4,28 +4,52 @@ module.exports = {
 
     renderLandingPage: (req, res) =>
     {
+        console.log(`Test cookie: ${req.cookies.test}`);
+
         return res.render('index', {
             PageTitle: 'Landing',
             isAuthenticated: req.oidc.isAuthenticated()
         })
     },
 
-    renderDashboard: (req, res) =>
+    renderDashboard: async (req, res) =>
     {
-        return res.render('user/dashboard', {
-            PageTitle: "Dashboard"
-        })
+        try
+        {
+            // Configure URL for requesting current User.
+            const url = process.env.audience + `users-by-email?email=${req.oidc.user.email}`;
+            // Set headers for calling the API
+            const options = { headers: { 'Authorization': `Bearer ${req.cookies['api_token']}` } }
+
+            // Call user API and ask for current user
+            // const currentUser = await axios.get(url, options);
+            // if (currentUser.logins < 2) {
+            // await axios.post('/api/v2/roles/{role_id}/users, {users: [currentUSer.user_id]})
+            // return res.render('user/dashboard', {PageTitle: "Dashboard"})
+            // }
+            // If current user has less than 2 logins, post the ROLES API to set USER as default role
+            // else render dashboard
+            // const response = await axios.get(url, options);
+            // const profile = response.data;
+            // console.log('[renderDashboard]: ', profile)
+            return res.render('user/dashboard', {
+                PageTitle: "Dashboard"
+            })
+        } catch (error)
+        {
+            return next(error)
+        }
     },
 
     renderUserProfile: async (req, res, next) =>
     {
         try
         {
+            // Configure URL for requesting current User.
+            const url = process.env.audience + `users-by-email?email=${req.oidc.user.email}`;
             // Set headers for calling the API
             const options = { headers: { 'Authorization': `Bearer ${req.cookies['api_token']}` } }
-            const url = process.env.audience + `users-by-email?email=${req.oidc.user.email}`;
-            // Get user profile from Auth0 API - Add /{id} to the url to call for one specific user.
-            // url = `${url}{req.oidc.user.id}`
+
             const response = await axios
                 .get(url, options)
             const profile = response.data;

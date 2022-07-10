@@ -73,12 +73,12 @@ app.use(morgan('dev'))
  * @todo Remove json middleware for form-data parsing?
  * auth router attaches /login, /logout, and /callback routes to the baseURL
  */
-app.use(auth(config));
+app.use(auth(config))
+app.use(cookieParser())
 app.use(express.json())
 app.use(bodyParser.urlencoded({
   extended: true
 }))
-app.use(cookieParser())
 app.use(cors())
 app.use(middleware.tokenValidator)
 app.use(middleware.general)
