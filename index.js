@@ -96,7 +96,7 @@ app.use((err, req, res, next) =>
    * @todo Check if user is authenticated.
    *       If Authenticated, go back with error message.
    *       If not Authenticated, render index with base error.
-   *       Actually, what I'm thinking is using req.originalUrl to redirect to the previous page with the error message.
+   *       Actually, what I'm thinking is using req.baseUrl to redirect to the previous page with the error message.
    */
   res.render('index', {
     error: err,
