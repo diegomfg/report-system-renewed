@@ -33,9 +33,7 @@ module.exports = {
                 PageTitle: "All Reports"
             })
         } catch (error) {
-            return res.render('report/error', {
-                error: error.message
-            })
+            return next(error)
         }
     },
 
@@ -50,7 +48,7 @@ module.exports = {
             if (!report) return res.redirect('/')
             return res.render('report/single', {
                 report: report,
-                PageTitle: `View Report`
+                PageTitle: 'View Report'
             })
         } catch (error) {
             return next(error)
