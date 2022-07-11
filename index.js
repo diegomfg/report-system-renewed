@@ -83,7 +83,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://diegomfg:diego1210@diegocluster.6nhoq.mongodb.net/report-system?authSource=admin&replicaSet=diegocluster-shard-0&w=majority&readPreference=primary&retryWrites=true&ssl=true',
+    mongoUrl: process.env.prod_db_uri,
     dbName: "report-system",
     collectionName: "sessions",
     autoRemove: 'interval',
