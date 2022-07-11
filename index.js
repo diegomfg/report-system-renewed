@@ -86,7 +86,9 @@ app.use(session({
     mongoUrl: 'mongodb+srv://diegomfg:diego1210@diegocluster.6nhoq.mongodb.net/report-system?authSource=admin&replicaSet=diegocluster-shard-0&w=majority&readPreference=primary&retryWrites=true&ssl=true',
     dbName: "report-system",
     collectionName: "sessions",
-    autoRemove: "native"
+    autoRemove: 'interval',
+    autoRemoveInterval: 60,
+    touchAfter: 3600
   })
 }))
 app.use(express.json())

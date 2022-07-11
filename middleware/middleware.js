@@ -4,14 +4,11 @@ const axios = require('axios').default;
 module.exports = {
   routeValidator: (req, res, next) =>
   {
-    // Validates presence of session data from Auth0
     return next();
   },
 
   tokenValidator: async (req, res, next) =>
   {
-    console.log('Request API token')
-    console.log(req.session)
     if(!req.session.api_token){
       
       try {
@@ -22,7 +19,6 @@ module.exports = {
             audience: process.env.audience,
             grant_type: process.env.grant_type
           },
-    
           {
             headers: { 'content-type': 'application/json' }
           })
@@ -39,26 +35,8 @@ module.exports = {
     }
   },
 
-  general: async (req, res, next) =>
-  {
+  general: async (req, res, next) => {
     res.locals.user = req.oidc.user;
-    // try
-    // {
-    //   if (req.oidc.user)
-    //   {
-    //     // Configure URL for requesting current User.
-    //     const url = process.env.audience + `users-by-email?email=${req.oidc.user.email}`;
-    //     // Set headers for calling the API
-    //     const options = { headers: { 'Authorization': `Bearer ${req.cookies['api_token']}` } }
-
-    //     const response = await axios
-    //       .get(url, options)
-    //     const profile = response.data;
-    //   }
-    // } catch (error)
-    // {
-    //   return next(error)
-    // }
     next()
   }
 }
