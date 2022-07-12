@@ -1,16 +1,21 @@
 {{>header}}
-{{#if error }}
+<div class="bg-gray-800 p-4 text-white">
+  {{#if error }}
   <p>{{error.message}}</p>
 {{/if}}
-  <h2>Welcome to</h2>
-  <h1>Report System</h1>
-  <hr>
-  {{#if isAuthenticated }}
-    <a href="/dashboard">Dashboard</a>
-    <a href="/profile/{{user.nickname}}">Profile</a>
-    <a href="/reports/">Reports</a>
-    <a href="/logout">Logout</a>
-  {{else}}
-    <a href="/login">Login or Sign Up</a>
-  {{/if}}
+  <div class="w:3/6 sm:w-48 max-w-screen-xl my-4 mx-auto py-4 px-4">
+    <h2 class="px-auto">Welcome to</h2>
+    <h1 class="px-auto">Report System</h1>
+  </div>
+  
+  <div class="flex">
+    {{#if isAuthenticated }}
+    <a href="/dashboard" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-auto">Dashboard</a>
+    <a href="/logout" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-auto">Logout</a>
+  {{else}}  
+      <a href="/login" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-auto">Login or Sign Up</a>
+      {{/if}}
+  </div>
+  
+</div>
 {{>footer}}
