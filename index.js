@@ -5,8 +5,9 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const middleware = require('./middleware/middleware')
 const hbsSetup = require('./utils/hbsHelpers')
-const session  = require('express-session')
+const session = require('express-session')
 const MongoStore = require('connect-mongo')
+const authMiddleware = require('./utils/authHelpers')
 /**
  * @summary Configure environment variables
  * Loads a local .env file with configuration variables such as PORT, local_db_uri, prod_db_uri
@@ -98,6 +99,7 @@ app.use(bodyParser.urlencoded({
 app.use(cors())
 app.use(middleware.tokenValidator)
 app.use(middleware.general)
+app.use(authMiddleware.setDefaultRole)
 
 
 /**
@@ -105,6 +107,11 @@ app.use(middleware.general)
  */
 app.use('/', pagesRoutes)
 app.use('/reports', requiresAuth(), reportRoutes)
+
+app.use((req, res, next) =>
+{
+  return next({ message: 'Not found 404' })
+})
 
 app.use((err, req, res, next) =>
 {
