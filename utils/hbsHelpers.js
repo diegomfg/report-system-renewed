@@ -5,6 +5,11 @@
 module.exports = (hbs) =>
 {
 
+  /**
+   * @todo Maybe change this to isAuthorOrAdmin
+   * @summary Validates that the resource to be rendered has the same author as the current user.
+   * else, if the current user has role of ADMIN, then proceed too.
+   */
   hbs.registerHelper('isAuthor', (user, report)=>{
     return user.email===report.author;
   })
