@@ -1,5 +1,17 @@
 const axios = require('axios').default;
 module.exports = {
+    /**
+     * First, call Auth0 API to get the current user's user accounts (may be Google, Auth0, Github, etc)
+     * Second, call the Auth0 roles API to get the current users associated with the USER role
+     * Third, loop through the @param currentUserAccounts to control each account's information
+     * Inside the @param currentUserAccounts, check if @param usersWithUserRole actually contains users
+     * otherwise push the current loop account's ID into an array.
+     * If the @param usersWithUserRole contains users, 
+     * loop through that array to check if the current user account's id is in the @param usersWithUserRole (sigh)
+     * 
+     * If any of the current user accounts has less than 2 logins, push id to array and set default role.
+     * @returns Next middleware
+     */
     setDefaultRole: async (req, res, next) =>
     {
         try
@@ -17,27 +29,26 @@ module.exports = {
 
                 // Call user API and ask for current user
                 const currentUsers = await axios.get(url, options);
+                // Get the current user's accounts (google, github, auth0)
                 const currentUserAccounts = currentUsers.data;
                 let ids = []
+                // The roles API url, with /roles/{role_id}/users @param role_id belongs to the USER role.
+                const rolesApiURL = process.env.audience + 'roles/rol_mlQ0FG5lHcnUNL4y/users';
+                // get the users associated with the USER role
+                const users = await axios.get(rolesApiURL, options);
+                const usersWithUserRole = users.data;
 
-                currentUserAccounts.forEach((user) =>
+                currentUserAccounts.forEach((account) =>
                 {
-                    ids.push(user.user_id)
+                    if(account.logins_count < 2){
+                        ids.push(account.user_id)
+                    }
                 })
 
-                const rolesApiURL = process.env.audience + 'roles/rol_mlQ0FG5lHcnUNL4y/users';
-                const users = await axios.get(rolesApiURL, options);
-                // If users is empty
-                const usersWithUserRole = users.data;
-                // Loop through usersWithUserRole and check if the user accounts are in the usersWithUserRole
-                // If they are, return next()
-                // else, await await axios.post(rolesApiURL, { users: ids }, options)
-                if (usersWithUserRole.length < 1)
-                {
-                    await axios.post(rolesApiURL, { users: ids }, options)
-
+                if(ids.length > 0){
+                    await axios.post(rolesApiURL, {users: ids}, options)
                 }
-
+                
                 return next();
 
             } else return next()
