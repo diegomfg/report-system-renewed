@@ -40,12 +40,14 @@ module.exports = {
 
                 currentUserAccounts.forEach((account) =>
                 {
-                    if(account.logins_count < 2){
+                    if(account.logins_count < 1){
                         ids.push(account.user_id)
                     }
                 })
 
                 if(ids.length > 0){
+                    // Associate the 'new' user with the USER role.
+                    associate
                     await axios.post(rolesApiURL, {users: ids}, options)
                 }
                 
