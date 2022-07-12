@@ -3,7 +3,7 @@
     class="border-r border-b border-l border-gray-400 lg:border-l lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
     <div class="w-full max-w-lg min-w-xs mx-auto px-4">
         {{!-- Haven't tested this below --}}
-        <h3>Published By: {{report.author}}</h3>
+        <h3>Published By: {{formatAuthor report.author}}</h3>
         <p><b>Created at: {{formatDate report.created_at}}</b></p>
         <p><b>Updated at: {{formatDate report.updated_at}}</b></p>
         {{#if (isAuthor user report)}}

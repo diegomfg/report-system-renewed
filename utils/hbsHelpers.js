@@ -36,4 +36,8 @@ module.exports = (hbs) =>
   {
     return Array.isArray(profile)
   })
+
+  hbs.registerHelper("formatAuthor", function (author){
+    return author.slice(0, author.indexOf('@'));
+  })
 }
