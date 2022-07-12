@@ -40,7 +40,6 @@ module.exports = {
 
                 currentUserAccounts.forEach((account) =>
                 {
-                    console.log(account)
                     if(account.logins_count < 2){
                         ids.push(account.user_id)
                     }

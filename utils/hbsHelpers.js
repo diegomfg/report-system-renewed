@@ -1,16 +1,13 @@
+/**
+ * @summary Set up Handlebars
+ * Added hbs helpers to assist the view rendering the content.
+ */
 module.exports = (hbs) =>
 {
 
   hbs.registerHelper('isAuthor', (user, report)=>{
     return user.email===report.author;
   })
-
-  /**
- * @summary Set up Handlebars
- * Added the isLanding helper function 
- * to ensure that the navbar is rendered everywhere else 
- * but the landing page
- */
   hbs.registerHelper("isLanding", function (page)
   {
     return page !== "Landing"

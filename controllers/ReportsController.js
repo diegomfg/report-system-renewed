@@ -1,5 +1,6 @@
 const Report = require('../models/Report');
 const REPORT_CATEGORIES = require('../constants/ReportCategories')
+
 module.exports = {
     renderCreate: (req, res) => {
         return res.render('report/new', {
@@ -21,6 +22,7 @@ module.exports = {
     },
 
     findAll: async (req, res) => {
+
         try {
             /**
              * @todo Research pagination?
@@ -55,10 +57,11 @@ module.exports = {
 
     create: async (req, res, next) => {
 
+        if(!req.body.title || !req.body.body || !req.oidc.user){
+            return res.redirect(406, req.baseUrl)
+        }
+
         try {
-            /**
-             * @todo Validate prescence of request' body
-             */
 
             const created = await Report
                 .create({
@@ -73,22 +76,16 @@ module.exports = {
         }
     },
 
-    /**
-     * 
-     * @todo Validate request body
-     * @todo Add middleware for securing resources that do not belong to other user.
-     */
     update: async (req, res, next) => {
 
         const {
             id
         } = req.params;
-        // const user = await axios.post(roles/admin/users)
-        // if user[0].email = req.oidc.user.email
-        // UPDATE REPORT
-        // else if req.oidc.user.nickname===report.author
-        // UPDATE REPORT
-        // else return res.statusCode(unauthorized).redirect('/reports')
+        
+        if(!req.body.title || !req.body.body || !req.oidc.user){
+            return res.redirect(406, req.baseUrl)
+        }
+
         try {
             const updated = await Report.findByIdAndUpdate(id, {
                 $set: req.body
