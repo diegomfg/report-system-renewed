@@ -1,14 +1,12 @@
 const Report = require('../models/Report');
 const REPORT_CATEGORIES = require('../constants/ReportCategories')
 module.exports = {
-
     renderCreate: (req, res) => {
         return res.render('report/new', {
             PageTitle: "Create new report",
             categories: REPORT_CATEGORIES
         });
     },
-
     renderUpdate: async (req, res) => {
         try {
             const report = await Report.findById(req.params.id)
@@ -61,11 +59,12 @@ module.exports = {
             /**
              * @todo Validate prescence of request' body
              */
+
             const created = await Report
                 .create({
                     title: req.body.title,
                     body: req.body.body,
-                    author: req.oidc.user.nickname,
+                    author: req.oidc.user.email,
                     category: req.body.category
                 })
             return res.redirect('/reports')

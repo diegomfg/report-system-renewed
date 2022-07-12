@@ -18,7 +18,6 @@ module.exports = {
         {
             if (req.oidc.user)
             {
-                // Configure URL for requesting current User.
                 const url = process.env.audience + `users-by-email?email=${req.oidc.user.email}`;
                 // Set headers for calling the API
                 const options = {
@@ -31,6 +30,7 @@ module.exports = {
                 const currentUsers = await axios.get(url, options);
                 // Get the current user's accounts (google, github, auth0)
                 const currentUserAccounts = currentUsers.data;
+
                 let ids = []
                 // The roles API url, with /roles/{role_id}/users @param role_id belongs to the USER role.
                 const rolesApiURL = process.env.audience + 'roles/rol_mlQ0FG5lHcnUNL4y/users';

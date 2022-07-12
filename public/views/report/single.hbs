@@ -6,8 +6,10 @@
         <h3>Published By: {{report.author}}</h3>
         <p><b>Created at: {{formatDate report.created_at}}</b></p>
         <p><b>Updated at: {{formatDate report.updated_at}}</b></p>
+        {{#if (isAuthor user report)}}
         <a href="/reports/delete/{{report.id}}">Delete</a>
         <a href="/reports/update/{{report.id}}">Update</a>
+        {{/if}}
         <h2 class="block text-base xs:text-xl sm:text-xl md:text-xl lg:text-xl xl:text-4xl mt-4 underline decoration-solid">Title</h2>
         <h3 class="text-base xs:text-2xl sm:text-2xl md:text-2xl lg:text-2xl xl:text-2xl">{{report.title}}</h3>
         <h2 class="block text-base xs:text-xl sm:text-xl md:text-xl lg:text-xl xl:text-xl mt-4 underline decoration-solid">Description</h2>

@@ -1,6 +1,10 @@
 module.exports = (hbs) =>
 {
 
+  hbs.registerHelper('isAuthor', (user, report)=>{
+    return user.email===report.author;
+  })
+
   /**
  * @summary Set up Handlebars
  * Added the isLanding helper function 
