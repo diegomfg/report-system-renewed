@@ -1,9 +1,6 @@
 {{> header }}
-<h1>User profile for {{user.email}}</h1>
-<a href="/dashboard">Dashboard</a>
-<a href="/reports">Reports</a>
 {{#if (hasManyProfile profile)}}
-<h1>See my account(s)</h1>
+<h1 class="mt-4 mb-4 font-bold bg-red-200 text-center">See my account(s)</h1>
 <div class="flex flex-row lg:flex-column">
 
     {{#each profile}}
@@ -21,11 +18,13 @@
 </div>
 {{else}}
 {{!-- Render Single profile --}}
-<h1>About to render a single profile</h1>
-<p>Name: {{profile.name}}</p>
-<p>Nickname: {{profile.nickname}}</p>
-<p>user_id: {{profile.user_id}}</p>
-<p>Last Login: {{profile.last_login}}</p>
-<p>Login count: {{profile.logins_count}}</p>
+<div class="bg-gray-200 w-full rounded shadow-md rounded-xl">
+    <h1>{{formatAuthor profile.name}}' Profile</h1>
+    <p>Name: {{profile.name}}</p>
+    <p>Nickname: {{profile.nickname}}</p>
+    <p>user_id: {{profile.user_id}}</p>
+    <p>Last Login: {{profile.last_login}}</p>
+    <p>Login count: {{profile.logins_count}}</p>
+</div>
 {{/if}}
 {{> footer }}
