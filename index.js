@@ -57,7 +57,7 @@ app.use(express.static(__dirname + '/public/'))
 hbs.registerPartials(__dirname + '/public/views/partials/')
 hbsSetup(hbs)
 /**
- * Setup logger
+ * @summary Setup logger
  */
 app.use(morgan('dev'))
 /**
