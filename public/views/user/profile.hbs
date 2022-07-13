@@ -3,16 +3,21 @@
 <a href="/dashboard">Dashboard</a>
 <a href="/reports">Reports</a>
 {{#if (hasManyProfile profile)}}
-{{!-- Render all profiles --}}
-<h1>See my profile(s)</h1>
-{{#each profile}}
-<p>Name: {{this.name}}</p>
-<p>Nickname: {{this.nickname}}</p>
-<p>user_id: {{this.user_id}}</p>
-<p>Last Login: {{this.last_login}}</p>
-<p>Login count: {{this.logins_count}}</p>
-<hr>
-{{/each}}
+<h1>See my account(s)</h1>
+<div class="flex flex-row">
+
+    {{#each profile}}
+
+    <div class="basis-full lg:basis-1/2 mx-auto shadow-md rounded-xl bg-gray-500">
+        <p class="basis-1/5 p-2">Name: {{this.name}}</p>
+        <p class="basis-1/5 p-2">Username: {{this.nickname}}</p>
+        <p class="basis-1/5 p-2">user_id: {{this.user_id}}</p>
+        <p class="basis-1/5 p-2">Last Login: {{formatDate this.last_login}}</p>
+        <p class="basis-1/5 p-2">Login count: {{this.logins_count}}</p>
+    </div>
+
+    {{/each}}
+</div>
 {{else}}
 {{!-- Render Single profile --}}
 <h1>About to render a single profile</h1>
