@@ -14,24 +14,17 @@ const authMiddleware = require('./utils/authHelpers')
  */
 const dotenv = require('dotenv')
 dotenv.config()
-
-
 /**
  * @summary Requires Mongodb and starts the connection
  */
 const connection = require('./database/connection')
 connection();
-
-
 /**
- * @summary Import the routes for the two main entities.
- * Each entity has its own API.
+ * @summary Import the routes for pages and reports controllers
  */
 const pagesRoutes = require('./routes/pages.routes')
 const reportRoutes = require('./routes/report.routes')
 const port = process.env.PORT || 8080;
-
-
 /**
  * @summary The Auth0 authentication middleware
  */
@@ -53,8 +46,6 @@ const config = {
  * @param {Express.Application} app
  */
 const app = express();
-
-
 /**
  * @summary Serve static content
  * Set up views
@@ -65,7 +56,6 @@ app.set('views', __dirname + '/public/views/')
 app.use(express.static(__dirname + '/public/'))
 hbs.registerPartials(__dirname + '/public/views/partials/')
 hbsSetup(hbs)
-
 /**
  * Setup logger
  */
@@ -98,8 +88,6 @@ app.use(middleware.tokenValidator)
 app.use(middleware.general)
 app.use(authMiddleware.setDefaultRole)
 
-
-
 /**
  * @summary Resource routes
  */
@@ -113,12 +101,6 @@ app.use((req, res, next) =>
 
 app.use((err, req, res, next) =>
 {
-  /**
-   * @todo Check if user is authenticated.
-   *       If Authenticated, go back with error message.
-   *       If not Authenticated, render index with base error.
-   *       Actually, what I'm thinking is using req.baseUrl to redirect to the previous page with the error message.
-   */
   res.render('index', {
     error: err,
     PageTitle: 'Landing'

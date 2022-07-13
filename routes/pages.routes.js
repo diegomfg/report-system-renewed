@@ -1,4 +1,7 @@
 const PagesController = require('../controllers/PagesController');
+/**
+ * @summary Router for pages such as '/' '/dashboard', and '/profile/:username'
+ */
 const pagesRouter = require('express').Router({ mergeParams: true })
 const { requiresAuth } = require('express-openid-connect')
 
