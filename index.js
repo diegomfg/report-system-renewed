@@ -78,8 +78,8 @@ app.use(morgan('dev'))
 app.use(auth(config))
 app.use(session({
   secret: '20192-3920-129',
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.prod_db_uri,
     dbName: "report-system",
