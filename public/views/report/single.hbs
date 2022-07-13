@@ -1,17 +1,24 @@
 {{>header}}
-<div
-    class="border-r border-b border-l border-gray-400 lg:border-l lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-    <div class="w-full max-w-lg min-w-xs mx-auto px-4">
-        {{!-- Haven't tested this below --}}
-        <h3>Published By: {{formatAuthor report.author}}</h3>
-        <p><b>Created at: {{formatDate report.created_at}}</b></p>
-        <p><b>Updated at: {{formatDate report.updated_at}}</b></p>
-        {{#if (isAuthor user report)}}
-        <a href="/reports/delete/{{report.id}}"
-            class="bg-blue-500 hover:bg-blue-700 text-white p-2 font-bold border border-blue-700 rounded my-2">Delete</a>
-        <a href="/reports/update/{{report.id}}"
-            class="bg-blue-500 hover:bg-blue-700 text-white p-2 font-bold border border-blue-700 rounded my-2">Update</a>
-        {{/if}}
+<div class="bg-white p-4 flex flex-wrap flex-col justify-between leading-normal">
+    <table class="table-fixed lg:w-1/3 mx-auto p-4">
+        <thead>
+            <tr>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Updated at</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{formatAuthor report.author}}</td>
+                <td>{{report.category}}</td>
+                <td>{{formatDate report.updated_at}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="w-full lg:w-1/3 max-w-1/2 min-w-xs mx-auto px-4">
+        {{!-- @todo Style this page. Create a sidebar for the details and a content block for the content of the report
+        --}}
         <h2
             class="block text-base xs:text-xl sm:text-xl md:text-xl lg:text-xl xl:text-4xl mt-4 underline decoration-solid">
             Title</h2>
@@ -22,7 +29,13 @@
         <article class="prose lg:prose-xl">
             {{ report.body }}
         </article>
-        <p><b>Category: {{report.category}}</b></p>
+        {{#if (isAuthor user report)}}
+        <a href="/reports/delete/{{report.id}}"
+            class="bg-blue-500 hover:bg-blue-700 text-white p-2 font-bold border border-blue-700 rounded inline-block mt-3">Delete</a>
+        <a href="/reports/update/{{report.id}}"
+            class="bg-blue-500 hover:bg-blue-700 text-white p-2 font-bold border border-blue-700 rounded inline-block mt-3">Update</a>
+        {{/if}}
     </div>
+
 </div>
 {{>footer}}
