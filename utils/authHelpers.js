@@ -40,17 +40,19 @@ module.exports = {
 
                 currentUserAccounts.forEach((account) =>
                 {
-                    if(account.logins_count < 2){
+                    if (account.logins_count < 2)
+                    {
                         ids.push(account.user_id)
                     }
                 })
 
-                if(ids.length > 0){
+                if (ids.length > 0)
+                {
                     // Associate the 'new' user with the USER role.
-                    
-                    await axios.post(rolesApiURL, {users: ids}, options)
+
+                    await axios.post(rolesApiURL, { users: ids }, options)
                 }
-                
+
                 return next();
 
             } else return next()
@@ -59,5 +61,10 @@ module.exports = {
         {
             return next(error)
         }
+    },
+
+    isAuthor: async (req, res, next) =>
+    {
+        next()
     }
 }

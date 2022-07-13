@@ -78,9 +78,6 @@ app.use(morgan('dev'))
 app.use(auth(config))
 app.use(session({
   secret: '20192-3920-129',
-  cookie: {
-    secure: true
-  },
   resave: true,
   saveUninitialized: true,
   store: MongoStore.create({
@@ -88,8 +85,8 @@ app.use(session({
     dbName: "report-system",
     collectionName: "sessions",
     autoRemove: 'interval',
-    autoRemoveInterval: 60,
-    touchAfter: 3600
+    autoRemoveInterval: 15,
+    touchAfter: 1800
   })
 }))
 app.use(express.json())
@@ -100,6 +97,7 @@ app.use(cors())
 app.use(middleware.tokenValidator)
 app.use(middleware.general)
 app.use(authMiddleware.setDefaultRole)
+
 
 
 /**
