@@ -10,8 +10,9 @@ module.exports = (hbs) =>
    * @summary Validates that the resource to be rendered has the same author as the current user.
    * else, if the current user has role of ADMIN, then proceed too.
    */
-  hbs.registerHelper('isAuthor', (user, report)=>{
-    return user.email===report.author;
+  hbs.registerHelper('isAuthor', (user, report) =>
+  {
+    return user.email === report.author;
   })
   hbs.registerHelper("isLanding", function (page)
   {
@@ -39,10 +40,11 @@ module.exports = (hbs) =>
    */
   hbs.registerHelper("hasManyProfile", function (profile)
   {
-    return Array.isArray(profile)
+    return profile.length > 1
   })
 
-  hbs.registerHelper("formatAuthor", function (author){
+  hbs.registerHelper("formatAuthor", function (author)
+  {
     return author.slice(0, author.indexOf('@'));
   })
 }

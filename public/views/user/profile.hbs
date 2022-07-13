@@ -1,11 +1,9 @@
 {{> header }}
-{{#if (hasManyProfile profile)}}
 <h1 class="mt-4 mb-4 font-bold bg-red-200 text-center">See my account(s)</h1>
-<div class="flex flex-row lg:flex-column">
-
+{{#if (hasManyProfile profile)}}
+<div class="grid grid-cols-1 md:grid-cols-2">
     {{#each profile}}
-
-    <div class="basis-full lg:basis-1/2 mx-auto shadow-md rounded-xl bg-gray-200">
+    <div class="shadow-md w-full md:w-1/2 md:mx-auto rounded-xl bg-gray-200">
         <p class="p-2">Name: {{this.name}}</p>
         <p class="p-2">Username: {{this.nickname}}</p>
         <p class="p-2">Email: {{this.email}}</p>
@@ -18,13 +16,12 @@
 </div>
 {{else}}
 {{!-- Render Single profile --}}
-<div class="bg-gray-200 w-full rounded shadow-md rounded-xl">
-    <h1>{{formatAuthor profile.name}}' Profile</h1>
-    <p>Name: {{profile.name}}</p>
-    <p>Nickname: {{profile.nickname}}</p>
-    <p>user_id: {{profile.user_id}}</p>
-    <p>Last Login: {{profile.last_login}}</p>
-    <p>Login count: {{profile.logins_count}}</p>
+<div class="bg-gray-200 md:mx-auto w-full rounded shadow-md rounded-xl p-3">
+    <p class="p-2">Name: {{profile.name}}</p>
+    <p class="p-2">Nickname: {{profile.nickname}}</p>
+    <p class="p-2">user_id: {{profile.user_id}}</p>
+    <p class="p-2">Last Login: {{profile.last_login}}</p>
+    <p class="p-2">Login count: {{profile.logins_count}}</p>
 </div>
 {{/if}}
 {{> footer }}

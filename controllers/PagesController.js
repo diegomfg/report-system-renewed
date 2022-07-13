@@ -34,12 +34,21 @@ module.exports = {
             const response = await axios
                 .get(url, options)
             const profile = response.data;
-            // Users can have more than one profile (OAuth, Auth0, Github)
-            // @todo Write hbs helper for checking if there is more than one profile
-            res.render('user/profile', {
+            if (profile.length > 1)
+            {
+                // Users can have more than one profile (OAuth, Auth0, Github)
+                // @todo Write hbs helper for checking if there is more than one profile
+                return res.render('user/profile', {
+                    PageTitle: "My Profile",
+                    profile
+                })
+            }
+
+            return res.render('user/profile', {
                 PageTitle: "My Profile",
-                profile
+                profile: profile[0]
             })
+
         } catch (error)
         {
             next(error)
