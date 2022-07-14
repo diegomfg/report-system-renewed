@@ -13,5 +13,6 @@ reportRoutes.post('/update/:id', reportsController.update)
 // Secure role-based
 reportRoutes.get('/delete/:id', reportsController.delete)
 reportRoutes.get('/:id', reportsController.findById)
+reportRoutes.get('/complete/:id', reportsController.complete)
 
 module.exports = reportRoutes;

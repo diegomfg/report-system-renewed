@@ -54,6 +54,7 @@ module.exports = {
         try
         {
             const report = await Report.findById(id);
+
             if (!report) return res.redirect('/')
             return res.render('report/single', {
                 report: report,
