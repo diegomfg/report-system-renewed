@@ -14,5 +14,7 @@ reportRoutes.post('/update/:id', reportsController.update)
 reportRoutes.get('/delete/:id', reportsController.delete)
 reportRoutes.get('/:id', reportsController.findById)
 reportRoutes.get('/complete/:id', reportsController.complete)
+reportRoutes.get('/completed/:isComplete', reportsController.filterComplete)
+
 
 module.exports = reportRoutes;

@@ -9,7 +9,7 @@ module.exports = {
             categories: REPORT_CATEGORIES
         });
     },
-    renderUpdate: async (req, res) =>
+    renderUpdate: async (req, res, next) =>
     {
         try
         {
@@ -25,7 +25,7 @@ module.exports = {
         }
     },
 
-    findAll: async (req, res) =>
+    findAll: async (req, res, next) =>
     {
 
         try
@@ -55,7 +55,7 @@ module.exports = {
         {
             const report = await Report.findById(id);
 
-            if (!report) return res.redirect('/')
+            if (!report) return res.redirect('/reports')
             return res.render('report/single', {
                 report: report,
                 PageTitle: 'View Report'
@@ -71,7 +71,7 @@ module.exports = {
 
         if (!req.body.title || !req.body.body || !req.oidc.user)
         {
-            return res.redirect(406, req.baseUrl)
+            return res.redirect(req.baseUrl)
         }
 
         try
@@ -100,7 +100,7 @@ module.exports = {
 
         if (!req.body.title || !req.body.body || !req.oidc.user)
         {
-            return res.redirect(406, req.baseUrl)
+            return res.redirect('/reports')
         }
 
         try
@@ -149,7 +149,7 @@ module.exports = {
         }
     },
 
-    complete: async (req, res) =>
+    complete: async (req, res, next) =>
     {
         try
         {
@@ -162,6 +162,20 @@ module.exports = {
                 return next(new Error(`Couldn't find report with id: ${req.params.id}`))
             }
             return res.redirect(`/reports/${id}`)
+        } catch (error)
+        {
+            return next(error)
+        }
+    },
+
+    filterComplete: async (req, res, next) =>
+    {
+        const { isComplete } = req.params;
+        try
+        {
+            const reports = await Report.find({ completed: isComplete })
+
+            res.render('report/all-reports', { reports, PageTitle: `${isComplete ? 'Completed' : 'Pending'} reports`, route: `${isComplete ? 'pending' : 'complete'}` })
         } catch (error)
         {
             return next(error)
