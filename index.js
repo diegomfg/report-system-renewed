@@ -62,7 +62,6 @@ hbsSetup(hbs)
 app.use(morgan('dev'))
 /**
  * @summary Middleware set up
- * @todo Remove json middleware for form-data parsing?
  * auth router attaches /login, /logout, and /callback routes to the baseURL
  */
 app.use(auth(config))
