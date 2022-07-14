@@ -2,28 +2,34 @@ const Report = require('../models/Report');
 const REPORT_CATEGORIES = require('../constants/ReportCategories')
 
 module.exports = {
-    renderCreate: (req, res) => {
+    renderCreate: (req, res) =>
+    {
         return res.render('report/new', {
             PageTitle: "Create new report",
             categories: REPORT_CATEGORIES
         });
     },
-    renderUpdate: async (req, res) => {
-        try {
+    renderUpdate: async (req, res) =>
+    {
+        try
+        {
             const report = await Report.findById(req.params.id)
             return res.render('report/update', {
                 PageTitle: "Update report",
                 report,
                 categories: REPORT_CATEGORIES
             });
-        } catch (error) {
+        } catch (error)
+        {
             return next(error)
         }
     },
 
-    findAll: async (req, res) => {
+    findAll: async (req, res) =>
+    {
 
-        try {
+        try
+        {
             /**
              * @todo Research pagination?
              */
@@ -32,36 +38,43 @@ module.exports = {
                 reports,
                 PageTitle: "All Reports"
             })
-        } catch (error) {
+        } catch (error)
+        {
             return next(error)
         }
     },
 
-    findById: async (req, res, next) => {
+    findById: async (req, res, next) =>
+    {
 
         const {
             id
         } = req.params;
 
-        try {
+        try
+        {
             const report = await Report.findById(id);
             if (!report) return res.redirect('/')
             return res.render('report/single', {
                 report: report,
                 PageTitle: 'View Report'
             })
-        } catch (error) {
+        } catch (error)
+        {
             return next(error)
         }
     },
 
-    create: async (req, res, next) => {
+    create: async (req, res, next) =>
+    {
 
-        if(!req.body.title || !req.body.body || !req.oidc.user){
+        if (!req.body.title || !req.body.body || !req.oidc.user)
+        {
             return res.redirect(406, req.baseUrl)
         }
 
-        try {
+        try
+        {
 
             const created = await Report
                 .create({
@@ -71,26 +84,31 @@ module.exports = {
                     category: req.body.category
                 })
             return res.redirect('/reports')
-        } catch (error) {
+        } catch (error)
+        {
             return next(error)
         }
     },
 
-    update: async (req, res, next) => {
+    update: async (req, res, next) =>
+    {
 
         const {
             id
         } = req.params;
-        
-        if(!req.body.title || !req.body.body || !req.oidc.user){
+
+        if (!req.body.title || !req.body.body || !req.oidc.user)
+        {
             return res.redirect(406, req.baseUrl)
         }
 
-        try {
+        try
+        {
             const updated = await Report.findByIdAndUpdate(id, {
                 $set: req.body
             })
-            if (updated.modifiedCount == 0) {
+            if (updated.modifiedCount == 0)
+            {
                 let error = {
                     message: 'Something happened and no reports were updated'
                 }
@@ -99,20 +117,24 @@ module.exports = {
 
             return res.redirect(`/reports/${updated.id}`)
 
-        } catch (error) {
+        } catch (error)
+        {
             return next(error)
         }
     },
 
-    delete: async (req, res, next) => {
+    delete: async (req, res, next) =>
+    {
 
         const {
             id
         } = req.params;
 
-        try {
+        try
+        {
             const report = await Report.findById(id)
-            if (!report) {
+            if (!report)
+            {
                 const error = {
                     message: `No report found with id ${id}`
                 }
@@ -120,7 +142,27 @@ module.exports = {
             }
             const deleted = await Report.findByIdAndDelete(id);
             return res.status(200).redirect('/reports')
-        } catch (error) {
+        } catch (error)
+        {
+            return next(error)
+        }
+    },
+
+    complete: async (req, res) =>
+    {
+        try
+        {
+            const { id } = req.params;
+            const report = await Report.findById(id);
+            report.completed = true;
+            await report.save();
+            if (!report)
+            {
+                return next(new Error(`Couldn't find report with id: ${req.params.id}`))
+            }
+            return res.redirect(`/reports/${id}`)
+        } catch (error)
+        {
             return next(error)
         }
     }

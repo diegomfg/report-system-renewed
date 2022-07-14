@@ -1,4 +1,5 @@
 const axios = require('axios')
+const Report = require('../models/Report')
 
 module.exports = {
 
@@ -13,9 +14,21 @@ module.exports = {
 
     renderDashboard: async (req, res, next) =>
     {
-        return res.render('user/dashboard', {
-            PageTitle: "Dashboard"
-        })
+        try
+        {
+            // Run aggregation query for counting reports per user.
+            // Count reports per current user
+            // Count reports per category
+            // Completed reports (if author)(tricky)
+            return res.render('user/dashboard', {
+                PageTitle: "Dashboard",
+                // countReports
+            })
+        } catch (error)
+        {
+            return next(error)
+        }
+
     },
 
     renderUserProfile: async (req, res, next) =>

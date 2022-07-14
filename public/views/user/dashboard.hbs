@@ -1,21 +1,15 @@
 {{> header }}
-<h1>Dashboard</h1>
-<div>
-    {{#if user}}
-    <div>
-        <p>This works... {{user.nickname}}</p>
-        <p>Here you will see how many reports have been posted by you, how approved many approved reports, and a
-            Chart.js graph
-        </p>
-        <code>Welcome {{user.email}}!</code>
-    </div>
-
-    <a href="/reports">Reports</a>
-    <a href="/logout">Logout</a>
-    {{/if}}
-
+<div class="p-5 bg-gray-200">
     {{#if error}}
     <code>{{error}}</code>
+    {{/if}}
+    {{#if user}}
+    <div>
+        <p>Here you will see how many reports have been posted by you, how approved many approved reports, and a
+            Chart.js graph</p>
+        <code>Welcome {{user.email}}!</code>
+        <p>Reports published by you: </p>
+    </div>
     {{/if}}
 </div>
 {{> footer}}
