@@ -175,7 +175,7 @@ module.exports = {
         {
             const reports = await Report.find({ completed: isComplete })
 
-            res.render('report/all-reports', { reports, PageTitle: `${isComplete ? 'Completed' : 'Pending'} reports`, route: `${isComplete ? 'pending' : 'complete'}` })
+            res.render('report/all-reports', { reports, PageTitle: `${isComplete ? 'Completed' : 'Pending'} reports`, PageTitle: `${isComplete ? 'Pending' : 'Complete'}` })
         } catch (error)
         {
             return next(error)
