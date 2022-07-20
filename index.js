@@ -102,7 +102,7 @@ app.use((req, res, next) =>
 app.use((err, req, res, next) =>
 {
   let error;
-  console.log(err instanceof Error)
+  console.log(err)
   error = err
   res.render('index', {
     error,
