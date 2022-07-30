@@ -7,10 +7,14 @@ module.exports = {
     return next();
   },
 
+  /**
+   * @todo Refactor into client-grants flow
+   */
   tokenValidator: async (req, res, next) =>
   {
     if (!req.session.api_token)
     {
+      console.log('Req api token not found')
       try
       {
         const token = await axios.post(process.env.tokenUrl,
@@ -38,6 +42,8 @@ module.exports = {
 
     } else
     {
+      console.log('request token found')
+      console.log(req.session)
       return next()
     }
   },

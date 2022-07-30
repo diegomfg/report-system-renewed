@@ -68,15 +68,7 @@ app.use(auth(config))
 app.use(session({
   secret: '20192-3920-129',
   resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.prod_db_uri,
-    dbName: "report-system",
-    collectionName: "sessions",
-    autoRemove: 'interval',
-    autoRemoveInterval: 15,
-    touchAfter: 1800
-  })
+  saveUninitialized: false
 }))
 app.use(express.json())
 app.use(bodyParser.urlencoded({
