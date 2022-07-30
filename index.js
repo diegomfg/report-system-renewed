@@ -8,6 +8,7 @@ const hbsSetup = require('./utils/hbsHelpers')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
 const authMiddleware = require('./utils/authHelpers')
+const mongoose = require('mongoose')
 /**
  * @summary Configure environment variables
  * Loads a local .env file with configuration variables such as PORT, local_db_uri, prod_db_uri
@@ -92,8 +93,11 @@ app.use((req, res, next) =>
 
 app.use((err, req, res, next) =>
 {
+  let error;
+  console.log(err)
+  error = err
   res.render('index', {
-    error: err,
+    error,
     PageTitle: 'Landing'
   })
 })

@@ -12,13 +12,13 @@
                     <p class="text-gray-900 leading-none">By: {{formatAuthor this.author}}</p>
                     <p class="text-gray-600">{{this.updated_at}}</p>
                     <a href="/reports/{{this.id}}"
-                        class="inline-block align-baseline font-bold text-lg border-l border-r border-t border-b rounded text-gray-500 hover:text-blue-800">View</a>
+                        class="inline-block align-baseline font-bold text-lg border-l border-r border-t border-b rounded text-gray-500 hover:text-blue-800 px-3">View</a>
 
                     {{#if this.completed}}
                     <span
-                        class="text-bold inline-block align-baseline font-bold text-lg rounded text-gray-500">Completed</span>
+                        class="text-bold border-black border-l px-3 inline-block align-baseline font-bold text-lg text-gray-500">Completed</span>
                     {{else}}
-                    <span class="text-bold inline-block align-baseline font-bold text-lg rounded text-red-400">Not
+                    <span class="text-bold border-black border-l px-3 inline-block align-baseline font-bold text-lg text-red-400">Not
                         completed</span>
                     {{/if}}
                 </div>
